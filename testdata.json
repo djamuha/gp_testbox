@@ -30,7 +30,7 @@
 	"name": "Метод Х",
 	"bik": "041012718",
 	"bank_name": "ПАО КБ ВОСТОЧНЫЙ",
-	"corr_account_number": "30101810700000000718"	
+	"corr_account_number": "30101810700000000718"
 },{
 	"test_id": "AT01-04",
 	"test_case": "GP-T760",
@@ -97,7 +97,29 @@
 	"first_name":"Имяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя",
 	"secondary_name":"Отчествоооооооооооооооооооооооооооооооооооооо",
 	"birth_date":"1999-01-09"
-},{ 
+},{
+	"test_id": "AT01-10",
+	"test_case": "GP-T766",
+	"test_cycle": "GP-C4",
+	"test_name": "Ошибка при добавлении метода оплаты с длинной счета меньше 20-ти символов",
+	"frst_user": "ravin",
+	"rounds": "0",
+	"name": "Метод Х",
+	"bik": "041012718",
+	"bank_name": "ПАО КБ ВОСТОЧНЫЙ",
+	"corr_account_number": "30101810700000000718"
+},{
+	"test_id": "AT01-11",
+	"test_case": "GP-T767",
+	"test_cycle": "GP-C4",
+	"test_name": "Ошибка при добавлении метода оплаты с БИК меньше 9-ти символов",
+	"frst_user": "ravin",
+	"rounds": "0",
+	"name": "Метод Х",
+	"bik": "04101271",
+	"bank_name": "ПАО КБ ВОСТОЧНЫЙ",
+	"corr_account_number": "30101810700000000718"
+},{
 	"test_id": "AT02-01",
 	"test_case": "GP-T744",
 	"test_cycle": "GP-C4",
