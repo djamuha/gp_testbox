@@ -1,0 +1,2646 @@
+{
+	"info": {
+		"_postman_id": "b4a9d061-c3dd-44bd-b7e9-dfa02ad9e1e9",
+		"name": "gp-testbox",
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8fba6f55-eaa8-49ec-9abc-bc5b5374f1a5",
+						"exec": [
+							"//получаем число циклов теста",
+							"var rounds = pm.variables.get('rounds');",
+							"",
+							"if (rounds == 0) {",
+							"        console.log('Начало выполнения авто-теста \"' + pm.variables.get('test_id')",
+							"                    + ' ' + pm.variables.get('test_name') +'\"');",
+							"        ",
+							"        //полностью очищаем глобальный контекст",
+							"        pm.globals.clear();",
+							"    }",
+							"else",
+							"    {",
+							"        console.log('автотест продолжается с нового цикла');",
+							"    }"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "557eb28b-ee22-485c-a37d-54e3af7ea367",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//переменные для хранения логина",
+							"var user;",
+							"",
+							"//след. запрос из коллекции",
+							"var nextRequest = null;",
+							"",
+							"//получаем host тестового сервереа и формируем url",
+							"var url = 'http://' + pm.environment.get('host') + '/login';",
+							"",
+							"//получаем токен из тела ответа",
+							"var csrf = json.data.csrf;",
+							"",
+							"if (csrf) {",
+							" //сохраняем токен в глоб. контекст",
+							" pm.globals.set('csrf', csrf);",
+							" ",
+							" //получаем идентификатор авто-теста",
+							" var test_id = pm.variables.get('test_id');",
+							"}",
+							"",
+							"//определяем групповой ид авто-теста",
+							"if (test_id == 'AT01-01' || test_id == 'AT01-04' || test_id == 'AT01-05' || test_id == 'AT01-06' || test_id == 'AT01-07' || test_id == 'AT01-08') {",
+							"    test_id = 'AT01-X1';",
+							"}",
+							"if (test_id == 'AT01-02' || test_id == 'AT01-03') {",
+							"    test_id = 'AT01-X2';",
+							"}",
+							"if (test_id == 'AT04-01' || test_id == 'AT04-02' || test_id == 'AT04-03') {",
+							"    test_id = 'AT04-X1';",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('url: ' + url);",
+							"    console.log('значение токена: ' + csrf);",
+							"    console.log('ид автотеста: ' + test_id);",
+							"}",
+							"",
+							"//определяем id автотеста",
+							"switch (test_id) {",
+							"    case 'AT01-X1':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'natural-person';",
+							"        break;",
+							"    ",
+							"    case 'AT01-X2':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'profile';",
+							"        break;",
+							"    ",
+							"    case 'AT02-01':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'legal-entity';",
+							"        break;",
+							"        ",
+							"    case 'AT02-02':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'profile';",
+							"        break;",
+							"    ",
+							"    case 'AT03-01':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'sole-proprietor';",
+							"        break;",
+							"        ",
+							"    case 'AT03-02':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'profile';",
+							"        break;",
+							"    ",
+							"    case 'AT04-X1':",
+							"        //получаем логин пользователя",
+							"        user = pm.variables.get('frst_user');",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'create';",
+							"        break;",
+							"        ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем все ключевые переменные",
+							"        test_id = null;",
+							"        user = null;",
+							"        break; ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('логин: ' + user);",
+							"    console.log('след. запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//проверяем что след. запрос из коллекции определен",
+							"if (nextRequest) {",
+							"    //формируем тело запроса login",
+							"    const loginRequest = {",
+							"        url: url,",
+							"        method: 'POST',",
+							"        header: {",
+							"            \"accept\": \"application/json\",",
+							"            \"accept-encoding\": \"gzip, deflate\",",
+							"            \"accept-language\": \"ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3\",",
+							"            \"cache-control\": \"no-cache\",",
+							"            \"connection\": \"keep-alive\",",
+							"            \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\",",
+							"            \"x-requested-with\": \"XMLHttpRequest\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"login\": user, ",
+							"                                  \"password\":\"qwerty\",",
+							"                                  \"csrf\":csrf})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос login",
+							"    pm.sendRequest(loginRequest, function (err, res) {",
+							"        console.log(err ? err :res.json());})",
+							";}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"login\":\"{{user_test}}\",\"password\":\"{{password}}\",\"csrf\":\"{{csrf}}\"}"
+				},
+				"url": {
+					"raw": "http://{{host}}/auth/csrf-token",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"csrf-token"
+					]
+				},
+				"description": "The tocken is first thing when you want to run a test case.\nSimply, send it."
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "547345d4-0fef-4b6f-93b3-5f1e2924f3f8",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"var nextRequest; /*след. запрос из коллекции*/",
+							"",
+							"//получаем host тестового сервера и формируем базовый url для асинхронных запросов",
+							"var url = 'http://' + pm.environment.get('host');",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//определяем групповой ид авто-теста",
+							"if ((test_id == 'AT01-02') || (test_id == 'AT01-03')) {",
+							"    test_id = 'AT01-X1';",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('base URL: ' +  url);",
+							"}",
+							"",
+							"//определяем дальнейшую логику авто-теста",
+							"switch (test_id) {",
+							"    case 'AT01-X1':",
+							"        var natural_person_id; /*id физ.лица*/",
+							"        var haveNaturalPerson; /*флаг наличия физ.лица*/",
+							"        ",
+							"        //сохраняем первую запись по  физ.лицу в переменную",
+							"        haveNaturalPerson = json.data.naturalPersons[0];",
+							"        ",
+							"        //отладочный блок",
+							"        if (pm.variables.get('debug')) {",
+							"            console.log('объект naturalPerson: ' + haveNaturalPerson);",
+							"        }",
+							"        ",
+							"        //проверяем что запись по физ.лицу успешно получена",
+							"        if (haveNaturalPerson) {",
+							"            //сохраняем ид физ.лица в переменную",
+							"            natural_person_id = json.data.naturalPersons[0].id;",
+							"        }",
+							"        ",
+							"        //отладочный блок",
+							"        if (pm.variables.get('debug')) {",
+							"            console.log('ид naturalPerson: ' + natural_person_id);",
+							"            ",
+							"        }",
+							"        ",
+							"        if (natural_person_id) {",
+							"            //сохраняем ид физ.лица в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.naturalPersons[0].civil_law_subject_id);",
+							"            ",
+							"            //определяем след. запрос из коллекции (не надо добавлять новое физ.лицо)",
+							"            nextRequest = 'payment-method';",
+							"            ",
+							"            //выводим сведения по найденному физ.лицу в консоль",
+							"            console.log('ид субъекта гражданского права: ' + json.data.naturalPersons[0].civil_law_subject_id);",
+							"            console.log('ид физ.лица: ' + natural_person_id + '; ФИО: ' + json.data.naturalPersons[0].last_name + \" \" + json.data.naturalPersons[0].first_name + \" \" + json.data.naturalPersons[0].secondary_name + \"; рожденный \" + json.data.naturalPersons[0].birth_date);",
+							"        } else {",
+							"            //добавляем новое физ.лицо асинхронным запросом",
+							"            console.log('не удалось найти физ.лиц в профиле пользователя');",
+							"            console.log('переходим к созданию физ.лица в асинхронном режиме');",
+							"            ",
+							"            //получаем токен из глоб. контекста",
+							"            var csrf = pm.globals.get('csrf');",
+							"            ",
+							"            //формируем тело запроса natural-person",
+							"            const Request = {",
+							"                url: url  + '/natural-person',",
+							"                method: 'POST',",
+							"                header: {",
+							"                    \"accept\": \"application/json\",",
+							"                    \"accept-encoding\": \"gzip, deflate\",",
+							"                    \"accept-language\": \"ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3\",",
+							"                    \"cache-control\": \"no-cache\",",
+							"                    \"connection\": \"keep-alive\",",
+							"                    \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\",",
+							"                    \"x-requested-with\": \"XMLHttpRequest\",",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw:  JSON.stringify({\"last_name\": \"Тест-юзер\",",
+							"                                          \"first_name\":\"Автомат\",",
+							"                                          \"secondary_name\":\"Калашнокович\",",
+							"                                          \"birth_date\": \"1971-05-01\",",
+							"                                          \"csrf\":csrf})",
+							"                }",
+							"            };",
+							"            ",
+							"            //отправляем асинхронный запрос natural-person",
+							"            pm.sendRequest(Request, function (err, res) {",
+							"            console.log(err ? err :res.json());})",
+							"            ",
+							"            //еще раз отправляем запрос для получения физ.лица",
+							"            nextRequest = 'profile';",
+							"        }",
+							"        break;",
+							"    ",
+							"    case 'AT02-02':",
+							"        var legal_entity_id; /*id юр.лица*/",
+							"        var haveLegalEntity; /*флаг наличия юр.лица*/",
+							"        ",
+							"        //сохраняем первую запись по  юр.лицу в переменную",
+							"        haveLegalEntity = json.data.legalEntities[0];",
+							"        ",
+							"        //отладочный блок",
+							"        if (pm.variables.get('debug')) {",
+							"            console.log('объект legalEntity: ' + haveLegalEntity);",
+							"        }",
+							"        ",
+							"        //проверяем что запись по юр.лицу успешно получена",
+							"        if (haveLegalEntity) {",
+							"            //сохраняем ид юр.лица в переменную",
+							"            legal_entity_id = json.data.legalEntities[0].id;",
+							"        }",
+							"        ",
+							"        //отладочный блок",
+							"        if (pm.variables.get('debug')) {",
+							"            console.log('ид LegalEntity: ' + legal_entity_id);",
+							"            ",
+							"        }",
+							"        ",
+							"        if (legal_entity_id) {",
+							"            //сохраняем ид субъекта гр. права юр.лица в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.legalEntities[0].civil_law_subject_id);",
+							"            ",
+							"            //определяем след. запрос из коллекции (не надо добавлять новое юр.лицо)",
+							"            nextRequest = 'payment-method';",
+							"            ",
+							"            //выводим сведения по найденному юр.лицу в консоль",
+							"            console.log('ид субъекта гражданского права: ' + json.data.legalEntities[0].civil_law_subject_id);",
+							"            console.log('ид юр.лица: ' + legal_entity_id + '; наименование: ' + json.data.legalEntities[0].name + \"; адрес \" + json.data.legalEntities[0].legal_address + \"; ИНН: \" + json.data.legalEntities[0].inn + \"; КПП: \" + json.data.legalEntities[0].kpp + \"; НДС: \" + json.data.legalEntities[0].nds.name);",
+							"        } else {",
+							"            //добавляем новое юр.лицо асинхронным запросом",
+							"            console.log('не удалось найти юр.лиц в профиле пользователя');",
+							"            console.log('переходим к созданию юр.лица в асинхронном режиме');",
+							"            ",
+							"            //получаем токен из глоб. контекста",
+							"            var csrf = pm.globals.get('csrf');",
+							"            ",
+							"            //формируем тело запроса legal-entity",
+							"            const Request = {",
+							"                url: url + '/profile/legal-entity',",
+							"                method: 'POST',",
+							"                header: {",
+							"                    \"accept\": \"application/json\",",
+							"                    \"accept-encoding\": \"gzip, deflate\",",
+							"                    \"accept-language\": \"ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3\",",
+							"                    \"cache-control\": \"no-cache\",",
+							"                    \"connection\": \"keep-alive\",",
+							"                    \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\",",
+							"                    \"x-requested-with\": \"XMLHttpRequest\",",
+							"                    \"Content-Type\": \"application/json\"",
+							"                },",
+							"                body: {",
+							"                    mode: 'raw',",
+							"                    raw:  JSON.stringify({\"civil_law_subject_type\": \"legal_entity\",",
+							"                                          \"csrf\": csrf,",
+							"                                          \"inn\": \"784090004406\",",
+							"                                          \"kpp\": \"123331\",",
+							"                                          \"legal_address\": \"москва\",",
+							"                                          \"name\":\"ООО Агропром\",",
+							"                                          \"nds_type\": \"2\"})",
+							"                }",
+							"            };",
+							"            ",
+							"            //отправляем асинхронный запрос legal-entity",
+							"            pm.sendRequest(Request, function (err, res) {",
+							"            console.log(err ? err :res.json());})",
+							"            ",
+							"            //еще раз отправляем запрос для получения физ.лица",
+							"            nextRequest = 'profile';",
+							"        }",
+							"        break;",
+							"        ",
+							"        case 'AT03-02':",
+							"            var sole_proprietor_id; /*для хранения id ИП*/",
+							"            var haveSoleProprietor; /*флаг наличия ИП*/",
+							"            ",
+							"            //сохраняем первую запись по  ИП в переменную",
+							"            haveSoleProprietor = json.data.soleProprietors[0];",
+							"            ",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('объект soleProprietor: ' + haveSoleProprietor);",
+							"            }",
+							"            ",
+							"            //проверяем что запись по ИП успешно получена",
+							"            if (haveSoleProprietor) {",
+							"                //сохраняем ид юр.лица в переменную",
+							"                sole_proprietor_id = json.data.soleProprietors[0].id;",
+							"            }",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид Sole Proprietor: ' + sole_proprietor_id);",
+							"            }",
+							"            ",
+							"            //определяем послед. логику в зависимости от наличия/отсутвия ИП",
+							"            if (sole_proprietor_id) {",
+							"                //сохраняем ид субъекта гр. права ИП в глоб. контекст",
+							"                pm.globals.set('civil_law_subject_id', json.data.soleProprietors[0].civil_law_subject_id);",
+							"                ",
+							"                //определяем след. запрос из коллекции (не надо добавлять нового ИП)",
+							"                nextRequest = 'payment-method';",
+							"                ",
+							"                //выводим сведения по найденному ИП в консоль",
+							"                console.log('ид субъекта гражданского права: ' + json.data.soleProprietors[0].civil_law_subject_id);",
+							"                console.log('ид ИП: ' + sole_proprietor_id + '; ФИО: ' + json.data.soleProprietors[0].last_name + \" \" + json.data.soleProprietors[0].first_name + \" \" + json.data.soleProprietors[0].secondary_name + \"; дата рождения: \" + json.data.soleProprietors[0].birth_date + \"; наименование: \" + json.data.soleProprietors[0].name + \"; ИНН: \" + json.data.soleProprietors[0].inn + \"; НДС: \" + json.data.soleProprietors[0].nds.name);",
+							"            } else {",
+							"                //добавляем нового ИП асинхронным запросом",
+							"                console.log('не удалось найти ИП в профиле пользователя');",
+							"                console.log('переходим к созданию ИП в асинхронном режиме');",
+							"                ",
+							"                //получаем токен из глоб. контекста",
+							"                var csrf = pm.globals.get('csrf');",
+							"                ",
+							"                //формируем тело запроса sole-proprietor",
+							"                const Request = {",
+							"                    url: url  + '/profile/sole-proprietor',",
+							"                    method: 'POST',",
+							"                    header: {",
+							"                        \"accept\": \"application/json\",",
+							"                        \"accept-encoding\": \"gzip, deflate\",",
+							"                        \"accept-language\": \"ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3\",",
+							"                        \"cache-control\": \"no-cache\",",
+							"                        \"connection\": \"keep-alive\",",
+							"                        \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36\",",
+							"                        \"x-requested-with\": \"XMLHttpRequest\",",
+							"                        \"Content-Type\": \"application/json\"",
+							"                    },",
+							"                    body: {",
+							"                        mode: 'raw',",
+							"                        raw:  JSON.stringify({\"name\": \"ИП Сметунов\",",
+							"                                              \"last_name\": \"Тест-ИП\",",
+							"                                              \"first_name\":\"Автомат\",",
+							"                                              \"secondary_name\":\"Калашнокович\",",
+							"                                              \"birth_date\": \"01.02.1970\",",
+							"                                              \"inn\": \"784090004406\",",
+							"                                              \"nds_type\": \"4\",",
+							"                                              \"civil_law_subject_type\": \"sole_proprietor\",",
+							"                                              \"csrf\":csrf})",
+							"                    }",
+							"                };",
+							"            ",
+							"            //отправляем асинхронный запрос sole-proprietor",
+							"            pm.sendRequest(Request, function (err, res) {",
+							"            console.log(err ? err :res.json());})",
+							"            ",
+							"            //еще раз отправляем запрос для получения ИП",
+							"            nextRequest = 'profile';",
+							"        }    ",
+							"        break;",
+							"    ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем все ключевые переменные",
+							"        test_id = null;",
+							"        break; ",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{host}}/profile",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile"
+					]
+				},
+				"description": "Allows to get info about user"
+			},
+			"response": []
+		},
+		{
+			"name": "natural-person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3a3d259f-8edb-4435-94bb-9e97af7c4a95",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//след. запрос из колекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//сохраняем ид тест-кейса и тест-цикла из переменных колекции",
+							"var test_case = pm.variables.get('test_case');",
+							"var test_cycle = pm.variables.get('test_cycle');",
+							"",
+							"//сохраняем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем ид физ\\лица и сохраняем в глобальный контекст",
+							"    var natural_person_id = json.data.naturalPerson.id;",
+							"    pm.globals.set('natural_person_id', natural_person_id);",
+							"    ",
+							"    //выводим сведения по созданному физ.лицу в консоль",
+							"    console.log('ид физ.лица: ' + natural_person_id);",
+							"    console.log('данные физ.лица: ' + json.data.naturalPerson.last_name + \" \" + json.data.naturalPerson.first_name + \" \" + json.data.naturalPerson.secondary_name + \"; рожденный \" + json.data.naturalPerson.birth_date);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('тест-кейса в Jira: ' + test_case);",
+							"    console.log('тест-цикла в Jira: ' + test_cycle);",
+							"}",
+							"",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {",
+							"    case 'AT01-01':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added natural person\", function () {",
+							"            pm.expect(json.data.naturalPerson.first_name).to.eql(pm.variables.get('first_name'));",
+							"            pm.expect(json.data.naturalPerson.last_name).to.eql(pm.variables.get('last_name'));",
+							"            pm.expect(json.data.naturalPerson.secondary_name).to.eql(pm.variables.get('secondary_name'));",
+							"            //pm.expect(json.data.naturalPerson.birth_date).to.eql(pm.variables.get('birth_date'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT01-04':",
+							"        //проверка информации об ошибке в теле ответа",
+							"        pm.test(\"response body contains error and invalid parameter\", function () {",
+							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            //pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"???\");",
+							"            //commented becouse GP-2005 not fixed yet",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT01-05':",
+							"        //проверка информации об ошибке в теле ответа",
+							"        pm.test(\"response body contains error and invalid parameters\", function () {",
+							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            //pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"???\");",
+							"            //GP-2006 not fixed yet",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT01-06':",
+							"        //проверка информации об ошибке в теле ответа",
+							"        pm.test(\"response body contains error and invalid parameters\", function () {",
+							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            //pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"???\");",
+							"            //GP-2006 not fixed yet",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT01-07':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added natural person\", function () {",
+							"            pm.expect(json.data.naturalPerson.first_name).to.eql(pm.variables.get('first_name'));",
+							"            pm.expect(json.data.naturalPerson.last_name).to.eql(pm.variables.get('last_name'));",
+							"            pm.expect(json.data.naturalPerson.secondary_name).to.eql(pm.variables.get('secondary_name'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT01-08':",
+							"        //проверка информации об ошибке в теле ответа",
+							"        pm.test(\"response body contains error and invalid parameters\", function () {",
+							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            pm.expect(json.code).to.eql(\"ERROR_INVALID_FORM_DATA\");",
+							"            pm.expect(json.message).to.eql(\"The form does not pass validation.\");",
+							"            ",
+							"            pm.expect(json.data.first_name.stringLengthTooLong).to.eql(\"The input is more than 45 characters long\");",
+							"            pm.expect(json.data.secondary_name.stringLengthTooLong).to.eql(\"The input is more than 45 characters long\");",
+							"            pm.expect(json.data.last_name.stringLengthTooLong).to.eql(\"The input is more than 45 characters long\");",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//сохраняем результат тест-кейса в Jira",
+							"if (testResult) {",
+							"    //формирование асинхронного запроса для Jira",
+							"    const testCaseResult = {",
+							"        url: 'http://95.142.38.202:8080/rest/atm/1.0/testrun/' + test_cycle + '/testcase/' + test_case + '/testresult',",
+							"        method: 'PUT',",
+							"        header: {",
+							"            \"Authorization\": \"Basic bS5keWFjaGVua29Ac2ltcGxlLXRlY2gub3JnOlFhendzeDEyMw==\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"status\": testResult})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос в JIRA",
+							"    pm.sendRequest(testCaseResult, function (err, res) {",
+							"        console.log(err ? err :res.json());",
+							"    });",
+							"}",
+							"",
+							"if (testResult == 'Fail') {",
+							"    //выводим в лог сведения о неуспешности выполнения кейса",
+							"    console.log('[ERROR]: ' + pm.variables.get('test_id') + '.' + pm.variables.get('test_name') + ' was failed');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6213fcb9-b387-4273-a9a7-186b1cad285b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"last_name\":\"{{last_name}}\"\n,\"first_name\":\"{{first_name}}\"\n,\"secondary_name\":\"{{secondary_name}}\"\n,\"birth_date\":\"{{birth_date}}\"\n,\"csrf\":\"{{csrf}}\"}"
+				},
+				"url": {
+					"raw": "http://{{host}}/natural-person",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"natural-person"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "natural-person",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "accept-encoding",
+								"value": "gzip, deflate"
+							},
+							{
+								"key": "accept-language",
+								"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							},
+							{
+								"key": "connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "user-agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+							},
+							{
+								"key": "x-requested-with",
+								"value": "XMLHttpRequest"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/javascript"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"last_name\":\"Японичк\"\n,\"first_name\":\"Федор\"\n,\"secondary_name\":\"Иванович\"\n,\"birth_date\":\"01.04.1971\"\n,\"csrf\":\"{{csrf}}\"}"
+						},
+						"url": {
+							"raw": "http://{{host}}/natural-person",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"natural-person"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "no-store, no-cache, must-revalidate",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive",
+							"name": "Connection",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1161",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 16 Jul 2018 21:40:04 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Expires",
+							"value": "Thu, 19 Nov 1981 08:52:00 GMT",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100",
+							"name": "Keep-Alive",
+							"description": "Custom header"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.6 (CentOS) OpenSSL/1.0.2k-fips mod_fcgid/2.3.9 PHP/7.0.27",
+							"name": "Server",
+							"description": "A name for the server"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.0.27",
+							"name": "X-Powered-By",
+							"description": "Specifies the technology (ASP.NET, PHP, JBoss, e.g.) supporting the web application (version details are often in X-Runtime, X-Version, or X-AspNet-Version)"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"httpOnly": false,
+							"domain": "g-pay.org",
+							"path": "/",
+							"secure": false,
+							"value": "7dc6rgpcq83rgpc9smliq0umg3",
+							"key": "guarant-pay"
+						},
+						{
+							"expires": "Invalid Date",
+							"httpOnly": false,
+							"domain": "g-pay.org",
+							"path": "/",
+							"secure": false,
+							"value": "clt_1",
+							"key": "guarant-pay-login"
+						}
+					],
+					"body": "{\"status\":\"SUCCESS\",\"code\":null,\"message\":\"create natural person\",\"data\":{\"civilLawSubject\":{\"id\":95,\"is_pattern\":1,\"created\":{\"date\":\"2018-07-17 00:40:04.000000\",\"timezone_type\":3,\"timezone\":\"Europe\\/Moscow\"},\"user\":{},\"natural_person\":{},\"sole_proprietor\":null,\"legal_entity\":null,\"payment_methods\":{},\"nds_type\":null},\"naturalPerson\":{\"id\":89,\"first_name\":\"\\u0424\\u0435\\u0434\\u043e\\u0440\",\"secondary_name\":\"\\u0418\\u0432\\u0430\\u043d\\u043e\\u0432\\u0438\\u0447\",\"last_name\":\"\\u042f\\u043f\\u043e\\u043d\\u0438\\u0447\\u043a\",\"birth_date\":\"1971-04-01 00:00:00\",\"civil_law_subject\":{},\"natural_person_document\":{}},\"user\":{\"codes\":{},\"is_banned\":null,\"civil_law_subjects\":{},\"payment_methods\":{},\"avatar\":{},\"deal_agents\":{},\"id\":4,\"login\":\"clt_1\",\"password\":\"$2y$10$7GpO25c2KYpWlxxIDi9UreRehRRmJ30VOLVoMlB3dnFhyZfTSpqz.\",\"created\":{\"date\":\"2018-07-14 23:46:56.000000\",\"timezone_type\":3,\"timezone\":\"Europe\\/Moscow\"},\"password_reset_token\":null,\"password_reset_token_creation_date\":null,\"email\":{\"__initializer__\":{},\"__cloner__\":{},\"__isInitialized__\":false},\"phone\":{\"__initializer__\":{},\"__cloner__\":{},\"__isInitialized__\":false},\"roles\":{}},\"civil_law_subject_id\":95}}"
+				}
+			]
+		},
+		{
+			"name": "natural_person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a10e827c-4c6f-418e-9f1f-95c54e1d53c5",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest;",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем идентификатор авто-теста",
+							"    var test_id = pm.variables.get('test_id');",
+							"}",
+							"",
+							"//--------------------------------------------------------------------------------------------------------------------",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {/*",
+							"    case 'AT01-01':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added natural person\", function () {",
+							"            pm.expect(json.data.naturalPerson.first_name).to.eql(pm.variables.get('first_name'));",
+							"            pm.expect(json.data.naturalPerson.last_name).to.eql(pm.variables.get('last_name'));",
+							"            pm.expect(json.data.naturalPerson.secondary_name).to.eql(pm.variables.get('secondary_name'));",
+							"            //pm.expect(json.data.naturalPerson.birth_date).to.eql(pm.variables.get('birth_date'));",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        ",
+							"        break;*/",
+							"    default:",
+							"        console.log('Автотест не определен');",
+							"        //зануляем все ключевые переменные",
+							"        test_id = null;",
+							"        nextRequest = null;",
+							"        break;",
+							"}",
+							"//--------------------------------------------------------------------------------------------------------------------",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/profile/natural-person/{{natural_person_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"natural-person",
+						"{{natural_person_id}}"
+					]
+				},
+				"description": "This is the GET request for getting info about natural person.\nYou must write natural person id in the request url or in the command line."
+			},
+			"response": []
+		},
+		{
+			"name": "legal-entity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b265356c-8e44-4f1f-96e4-0d17e76b0f15",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//след. запрос из колекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//сохраняем ид тест-кейса и тест-цикла из переменных колекции",
+							"var test_case = pm.variables.get('test_case');",
+							"var test_cycle = pm.variables.get('test_cycle');",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем ид юр.лица и сохраняем в глобальный контекст",
+							"    var legal_entity_id = json.data.legalEntity.id;",
+							"    pm.globals.set('legal_entity_id', legal_entity_id);",
+							"    ",
+							"    //выводим данные по созданному юр.лицу",
+							"    console.log('юр.лицо: ' + json.data.legalEntity.name + \", ИНН: \" + json.data.legalEntity.inn + \", КПП: \" + json.data.legalEntity.kpp + \", адрес: \" + json.data.legalEntity.legal_address);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('ид юр. лица: ' + legal_entity_id);",
+							"    console.log('тест-кейса в Jira: ' + test_case);",
+							"    console.log('тест-цикла в Jira: ' + test_cycle);",
+							"}",
+							"",
+							"//определяем дальнейшую логику авто-теста",
+							"switch (test_id) {",
+							"    case 'AT02-01':",
+							"        //проверка сведений по добавленному юр.лицу",
+							"        pm.test(\"response body contains added legal entity\", function () {",
+							"            pm.expect(json.data.legalEntity.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.legalEntity.inn).to.eql(pm.variables.get('inn'));",
+							"            pm.expect(json.data.legalEntity.kpp).to.eql(pm.variables.get('kpp'));",
+							"            pm.expect(json.data.legalEntity.legal_address).to.eql(pm.variables.get('legal_address'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//сохраняем результат тест-кейса в Jira",
+							"if (testResult) {",
+							"    //формирование асинхронного запроса для Jira",
+							"    const testCaseResult = {",
+							"        url: 'http://95.142.38.202:8080/rest/atm/1.0/testrun/' + test_cycle + '/testcase/' + test_case + '/testresult',",
+							"        method: 'PUT',",
+							"        header: {",
+							"            \"Authorization\": \"Basic bS5keWFjaGVua29Ac2ltcGxlLXRlY2gub3JnOlFhendzeDEyMw==\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"status\": testResult})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос в JIRA",
+							"    pm.sendRequest(testCaseResult, function (err, res) {",
+							"        console.log(err ? err :res.json());",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"civil_law_subject_type\": \"legal_entity\"\r\n,\"csrf\":\"{{csrf}}\"\r\n,\"inn\": \"{{inn}}\"\r\n,\"kpp\": \"{{kpp}}\"\r\n,\"legal_address\": \"{{legal_address}}\"\r\n,\"name\": \"{{name}}\"\r\n,\"nds_type\": \"{{nds_type}}\"}"
+				},
+				"url": {
+					"raw": "http://{{host}}/profile/legal-entity",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"legal-entity"
+					]
+				},
+				"description": "POST request for creating new legal entity for current authorized user"
+			},
+			"response": []
+		},
+		{
+			"name": "legal_entity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1fbd34b-ca32-49f7-bc76-b7d147d7fe20",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest;",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем идентификатор авто-теста",
+							"    var test_id = pm.variables.get('test_id');",
+							"}",
+							"",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {",
+							"    /*case 'AT02-01':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added legal entity\", function () {",
+							"            pm.expect(json.data.legalEntity.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.legalEntity.inn).to.eql(pm.variables.get('inn'));",
+							"            pm.expect(json.data.legalEntity.kpp).to.eql(pm.variables.get('kpp'));",
+							"            pm.expect(json.data.legalEntity.legal_address).to.eql(pm.variables.get('legal_address'));",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        var nextRequest = 'logout';",
+							"        ",
+							"        break;*/",
+							"    default:",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://{{host}}/profile/legal-entity/{{legal_entity_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"legal-entity",
+						"{{legal_entity_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sole-proprietor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6e76fc5-7dbd-4468-89bb-4dd9a9f0bb97",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//сохраняем ид тест-кейса и тест-цикла из переменных колекции",
+							"var test_case = pm.variables.get('test_case');",
+							"var test_cycle = pm.variables.get('test_cycle');",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем ид ИП и сохраняем в глобальный контекст",
+							"    var sole_proprietor_id = json.data.soleProprietor.id;",
+							"    pm.globals.set('sole_proprietor_id', sole_proprietor_id);",
+							"    ",
+							"    //выводим данные по созданному ип",
+							"    console.log('данные ИП: ' + json.data.soleProprietor.last_name + \" \" + json.data.soleProprietor.first_name + \" \" + json.data.soleProprietor.secondary_name + \"; рожденный \" + json.data.soleProprietor.birth_date.date + \"; наименование: \" + json.data.soleProprietor.name + \"; ИНН: \" + json.data.soleProprietor.inn);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('ид ИП: ' + sole_proprietor_id);",
+							"    console.log('тест-кейса в Jira: ' + test_case);",
+							"    console.log('тест-цикла в Jira: ' + test_cycle);",
+							"}",
+							"",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {",
+							"    case 'AT03-01':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added sole proprietor\", function () {",
+							"            pm.expect(json.data.soleProprietor.first_name).to.eql(pm.variables.get('first_name'));",
+							"            pm.expect(json.data.soleProprietor.last_name).to.eql(pm.variables.get('last_name'));",
+							"            pm.expect(json.data.soleProprietor.secondary_name).to.eql(pm.variables.get('secondary_name'));",
+							"            pm.expect(json.data.soleProprietor.inn).to.eql(pm.variables.get('inn'));",
+							"            pm.expect(json.data.soleProprietor.name).to.eql(pm.variables.get('name'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        ",
+							"        break;",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//сохраняем результат тест-кейса в Jira",
+							"if (testResult) {",
+							"    //формирование асинхронного запроса для Jira",
+							"    const testCaseResult = {",
+							"        url: 'http://95.142.38.202:8080/rest/atm/1.0/testrun/' + test_cycle + '/testcase/' + test_case + '/testresult',",
+							"        method: 'PUT',",
+							"        header: {",
+							"            \"Authorization\": \"Basic bS5keWFjaGVua29Ac2ltcGxlLXRlY2gub3JnOlFhendzeDEyMw==\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"status\": testResult})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос в JIRA",
+							"    pm.sendRequest(testCaseResult, function (err, res) {",
+							"        console.log(err ? err :res.json());",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"csrf\": \"{{csrf}}\"\r\n,\"name\": \"{{name}}\"\r\n,\"last_name\": \"{{last_name}}\"\r\n,\"first_name\": \"{{first_name}}\"\r\n,\"secondary_name\": \"{{secondary_name}}\"\r\n,\"birth_date\": \"{{birth_date}}\"\r\n,\"inn\": \"{{inn}}\"\r\n,\"nds_type\": \"{{nds_type}}\"\r\n,\"civil_law_subject_type\": \"sole_proprietor\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/profile/sole-proprietor",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"sole-proprietor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sole_proprietor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6e6a8fb1-1c89-4f82-b210-13b24931779d",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest;",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем идентификатор авто-теста",
+							"    var test_id = pm.variables.get('test_id');",
+							"}",
+							"",
+							"//--------------------------------------------------------------------------------------------------------------------",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {",
+							"    /*case 'AT03-01':",
+							"        //проверка сведений по добавленному физ.лицу в теле ответа",
+							"        pm.test(\"response body contains added sole proprietor\", function () {",
+							"            pm.expect(json.data.soleProprietor.first_name).to.eql(pm.variables.get('first_name'));",
+							"            pm.expect(json.data.soleProprietor.last_name).to.eql(pm.variables.get('last_name'));",
+							"            pm.expect(json.data.soleProprietor.secondary_name).to.eql(pm.variables.get('secondary_name'));",
+							"            pm.expect(json.data.soleProprietor.inn).to.eql(pm.variables.get('inn'));",
+							"            pm.expect(json.data.soleProprietor.birth_date).to.eql(pm.variables.get('birth_date'));",
+							"            pm.expect(json.data.soleProprietor.name).to.eql(pm.variables.get('name'));",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        ",
+							"        break;*/",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest); ",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{host}}/profile/sole-proprietor/{{sole_proprietor_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"sole-proprietor",
+						"{{sole_proprietor_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment-method",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e2384e0-ae39-4822-9257-461ac8f9d1c7",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//сохраняем ид тест-кейса и тест-цикла из переменных колекции",
+							"var test_case = pm.variables.get('test_case');",
+							"var test_cycle = pm.variables.get('test_cycle');",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//ответ включает статус успешного выполнения (положительные сценарии)",
+							"if (json.status == \"SUCCESS\") {",
+							"    //получаем ид метода оплаты и сохраняем в глобальный контекст",
+							"    var payment_method_id = json.data.paymentMethod.id;",
+							"    pm.globals.set('payment_method_id', payment_method_id);",
+							"    ",
+							"    //выводим сведения по добавленному методу оплаты в консоль",
+							"    console.log('данные метода оплаты: ' + json.data.paymentMethod.paymentMethodBankTransfer.name + \"; \" + json.data.paymentMethod.paymentMethodBankTransfer.bankName + \"; БИК: \" + json.data.paymentMethod.paymentMethodBankTransfer.bik + \"; счет: \" + json.data.paymentMethod.paymentMethodBankTransfer.accountNumber);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('ид метода оплаты: ' + payment_method_id);",
+							"    console.log('тест-кейса в Jira: ' + test_case);",
+							"    console.log('тест-цикла в Jira: ' + test_cycle);",
+							"}",
+							"",
+							"//определяем дальнейшую логику для авто-теста",
+							"switch (test_id) {",
+							"    case 'AT01-02':",
+							"        //проверка сведений по добавленному методу оплаты физ. лица в теле ответа",
+							"        pm.test(\"response body contains added payment method of natural person\", function () {",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bankName).to.eql(pm.variables.get('bank_name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bik).to.eql(pm.variables.get('bik'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.accountNumber).to.eql(pm.globals.get('account_number'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT01-03':",
+							"        //проверка информации об ошибке в теле ответа",
+							"        pm.test(\"response body contains error and invalid parameter\", function () {",
+							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"The input is more than 20 characters long\");",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT02-02':",
+							"        //проверка сведений по добавленному методу оплаты юр.лица в теле ответа",
+							"        pm.test(\"response body contains added payment method of natural person\", function () {",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bankName).to.eql(pm.variables.get('bank_name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bik).to.eql(pm.variables.get('bik'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.accountNumber).to.eql(pm.globals.get('account_number'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT03-02':",
+							"        //проверка сведений по добавленному методу оплаты ИП в теле ответа",
+							"        pm.test(\"response body contains added payment method of natural person\", function () {",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bankName).to.eql(pm.variables.get('bank_name'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bik).to.eql(pm.variables.get('bik'));",
+							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.accountNumber).to.eql(pm.globals.get('account_number'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//сохраняем результат тест-кейса в Jira",
+							"if (testResult) {",
+							"    //формирование асинхронного запроса для Jira",
+							"    const testCaseResult = {",
+							"        url: 'http://95.142.38.202:8080/rest/atm/1.0/testrun/' + test_cycle + '/testcase/' + test_case + '/testresult',",
+							"        method: 'PUT',",
+							"        header: {",
+							"            \"Authorization\": \"Basic bS5keWFjaGVua29Ac2ltcGxlLXRlY2gub3JnOlFhendzeDEyMw==\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"status\": testResult})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос в JIRA",
+							"    pm.sendRequest(testCaseResult, function (err, res) {",
+							"        console.log(err ? err :res.json());",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5d1ca354-be39-4fd6-9cb0-c017ce2cffeb",
+						"exec": [
+							"//генерируем номер счета",
+							"var account_number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;",
+							"account_number = \"4081781090289002\" + account_number;",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//определяем спец. входные параметры в соответствии с ид авто-теста",
+							"if (test_id == 'AT01-03') {",
+							"    //номеру счета устанавливаем невалидное спец. значение",
+							"    account_number = account_number + '0000000000000';",
+							"}",
+							"",
+							"//сохраняем номер счета в глоальный контекст",
+							"pm.globals.set(\"account_number\", account_number);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"csrf\": \"{{csrf}}\"\r\n,\"name\":\"{{name}}\"\r\n,\"bik\":\"{{bik}}\"\r\n,\"bank_name\":\"{{bank_name}}\"\r\n,\"account_number\":\"{{account_number}}\"\r\n,\"corr_account_number\":\"{{corr_account_number}}\"\r\n,\"civil_law_subject_id\":\"{{civil_law_subject_id}}\"\r\n,\"payment_method_type\":\"bank_transfer\"\r\n,\"id\":\"\"}"
+				},
+				"url": {
+					"raw": "http://{{host}}/profile/payment-method",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"profile",
+						"payment-method"
+					]
+				},
+				"description": "Allows to add new payment method for civil_law_subject"
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a3226460-1513-47c6-a56c-e9579b35b538",
+						"exec": [
+							"//генерируем номер счета",
+							"var account_number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;",
+							"account_number = \"4081781090289002\" + account_number;",
+							"",
+							"//сохраняем номер счета в глоальный контекст",
+							"pm.globals.set(\"account_number\", account_number);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a3a05d7-c601-412f-8fa9-3a05fb7ca6cb",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//сохраняем ид тест-кейса и тест-цикла из переменных колекции",
+							"var test_case = pm.variables.get('test_case');",
+							"var test_cycle = pm.variables.get('test_cycle');",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//проверяем что ответ включает статус успешного выполнения",
+							"if (json.status == \"SUCCESS\") {",
+							"    ",
+							"    //получаем ид сделки и сохраняем в глобальный контекст",
+							"    var deal_id = json.data.deal.id;",
+							"    pm.globals.set('deal_id', deal_id);",
+							"    ",
+							"    //выводим сведения по добавленной сделке в консоль",
+							"    console.log('данные по сделке ' + json.data.deal.number + \": роль - \" + json.data.deal.deal_role + \"; сумма: \" + json.data.deal.amount_without_fee + \"; комиссия: \" + json.data.deal.fee_amount + \"; период доставки: \" + json.data.deal.delivery_period);",
+							"    console.log('статус сделки: ' + json.data.deal.status.name);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('ид автотеста: ' + test_id);",
+							"    console.log('ид сделки: ' + deal_id);",
+							"    console.log('тест-кейса в Jira: ' + test_case);",
+							"    console.log('тест-цикла в Jira: ' + test_cycle);",
+							"}",
+							"",
+							"switch (test_id) {",
+							"    case 'AT04-01':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        });",
+							"        ",
+							"        //проверка участия в качестве физ.лица по сделке",
+							"        pm.test('response body contains added natural person', function() {",
+							"            pm.expect(json.data.deal.customer.is_natural_person).to.eql(true);",
+							"            ",
+							"            //сохраняем id созданного субъекта права в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.deal.customer.civil_law_subject_id);",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
+							"            }",
+							"            ",
+							"        });",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by customer', function () {",
+							"            pm.expect(json.data.deal.customer.is_confirmed).to.eql(true);",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT04-02':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        });",
+							"        ",
+							"        //проверка участия в качестве юр.лица по сделке",
+							"        pm.test('response body contains added legal entity', function() {",
+							"            pm.expect(json.data.deal.contractor.is_legal_entity).to.eql(true);",
+							"            ",
+							"            //сохраняем id созданного субъекта права в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.deal.contractor.civil_law_subject_id);",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
+							"            }",
+							"        });",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by contractor', function () {",
+							"            pm.expect(json.data.deal.contractor.is_confirmed).to.eql(true);",
+							"            ",
+							"            //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT04-03':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        });",
+							"        ",
+							"        //проверка участия в качестве ип по сделке",
+							"        pm.test('response body contains added sole proprietor', function() {",
+							"            pm.expect(json.data.deal.contractor.is_sole_proprietor).to.eql(true) ;",
+							"           ",
+							"            //сохраняем id созданного субъекта права в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.deal.contractor.civil_law_subject_id);",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
+							"            }  ",
+							"        });",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by contractor', function() {",
+							"           pm.expect(json.data.deal.contractor.is_confirmed).to.eql(true);",
+							"           ",
+							"           //Pass - если все assertions успешно прошли",
+							"            testResult = 'Pass';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}",
+							"",
+							"//сохраняем результат тест-кейса в Jira",
+							"if (testResult) {",
+							"    //формирование асинхронного запроса для Jira",
+							"    const testCaseResult = {",
+							"        url: 'http://95.142.38.202:8080/rest/atm/1.0/testrun/' + test_cycle + '/testcase/' + test_case + '/testresult',",
+							"        method: 'PUT',",
+							"        header: {",
+							"            \"Authorization\": \"Basic bS5keWFjaGVua29Ac2ltcGxlLXRlY2gub3JnOlFhendzeDEyMw==\",",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw:  JSON.stringify({\"status\": testResult})",
+							"        }",
+							"    };",
+							"    ",
+							"    //отправляем асинхронный запрос в JIRA",
+							"    pm.sendRequest(testCaseResult, function (err, res) {",
+							"        console.log(err ? err :res.json());",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"csrf\":\"{{csrf}}\"\r\n,\"deal_type\":\"{{deal_type}}\"\r\n,\"deal_role\":\"{{deal_role}}\"\r\n,\"name\":\"{{name}}\"\r\n,\"addon_terms\":\"{{addon_terms}}\"\r\n,\"amount\":\"{{amount}}\"\r\n,\"fee_payer_option\":\"{{fee_payer_option}}\"\r\n,\"delivery_period\":\"{{delivery_period}}\"\r\n,\"counteragent_email\":\"{{counteragent_email}}\"\r\n,\"deal_civil_law_subject\":\r\n\t{ \"name\":\"{{legal_name}}\"\r\n\t, \"legal_address\":\"{{legal_address}}\"\r\n\t, \"inn\":\"{{inn}}\"\r\n\t, \"kpp\":\"{{kpp}}\"\r\n\t, \"nds_type\":\"{{nds_type}}\"\r\n\t, \"last_name\":\"{{last_name}}\"\r\n\t, \"first_name\":\"{{first_name}}\"\r\n\t, \"secondary_name\":\"{{secondary_name}}\"\r\n\t, \"birth_date\":\"{{birth_date}}\"\r\n\t, \"civil_law_subject_type\":\"{{civil_law_subject_type}}\"\r\n\t}\r\n, \"payment_method\":\r\n\t{ \"name\":\"\"\r\n\t, \"bik\":\"041012718\"\r\n\t, \"bank_name\": \"{{bank_name}}\"\r\n\t, \"account_number\": \"{{account_number}}\"\r\n\t, \"corr_account_number\": \"{{corr_account_number}}\"\r\n\t, \"civil_law_subject_id\": \"\"\r\n\t, \"payment_method_type\": \"{{payment_method_type}}\"\r\n\t, \"payment_method\": \"\"\r\n\t}\r\n,\"deal_confirm\":\"true\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/deal/create",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"deal",
+						"create"
+					]
+				},
+				"description": "Allows to create new deal by g-pay service."
+			},
+			"response": []
+		},
+		{
+			"name": "deal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e518e0c7-f9d2-4ed2-9fdb-2a1c4402b4a9",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest = null;",
+							"",
+							"//результат теста - по умолчанию равен 'Failed'",
+							"var testResult = 'Fail';",
+							"",
+							"//получаем идентификатор авто-теста",
+							"var test_id = pm.variables.get('test_id');",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"        console.log('ид автотеста: ' + test_id);",
+							"}",
+							"",
+							"switch (test_id) {",
+							"    /*case 'AT04-01':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        })",
+							"        ",
+							"        //проверка участия в качестве физ.лица по сделке",
+							"        pm.test('response body contains added natural person', function() {",
+							"            pm.expect(json.data.deal.customer.is_natural_person).to.eql(true);",
+							"            ",
+							"        })",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by customer', function () {",
+							"            pm.expect(json.data.deal.customer.is_confirmed).to.eql(true);",
+							"        })",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"        ",
+							"    case 'AT04-02':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        });",
+							"        ",
+							"        ",
+							"        //проверка участия в качестве юр.лица по сделке",
+							"        pm.test('response body contains added legal entity', function() {",
+							"            pm.expect(json.data.deal.contractor.is_legal_entity).to.eql(true);",
+							"            ",
+							"            //сохраняем id созданного субъекта права в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.deal.contractor.civil_law_subject_id);",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
+							"            }",
+							"        });",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by contractor', function () {",
+							"            pm.expect(json.data.deal.contractor.is_confirmed).to.eql(true);",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
+							"    ",
+							"    case 'AT04-03':",
+							"        //проверка сведений по созданной сделке",
+							"        pm.test('response body contains added deal', function () {",
+							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
+							"            pm.expect(json.data.deal.deal_role).to.eql(pm.variables.get('deal_role'));",
+							"            pm.expect(json.data.deal.addon_terms).to.eql(pm.variables.get('addon_terms'));",
+							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
+							"        });",
+							"        ",
+							"        //проверка участия в качестве ип по сделке",
+							"        pm.test('response body contains added sole proprietor', function() {",
+							"            pm.expect(json.data.deal.contractor.is_sole_proprietor).to.eql(true) ;",
+							"           ",
+							"            //сохраняем id созданного субъекта права в глоб. контекст",
+							"            pm.globals.set('civil_law_subject_id', json.data.deal.contractor.civil_law_subject_id);",
+							"            ",
+							"            //отладочный блок",
+							"            if (pm.variables.get('debug')) {",
+							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
+							"            }  ",
+							"        });",
+							"        ",
+							"        //проверка авто-подтверждения сделки при создании",
+							"        pm.test('response body contains confirm by contractor', function() {",
+							"           pm.expect(json.data.deal.contractor.is_confirmed).to.eql(true); ",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;*/    ",
+							"        ",
+							"    default:",
+							"        //выводим сообщение об ошибке",
+							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        ",
+							"        //зануляем ключевые переменные",
+							"        test_id = null;",
+							"        testResult = null;",
+							"        break;  ",
+							"}",
+							"",
+							"//переходим к след. запросу из коллекции",
+							"if (nextRequest) {",
+							"   postman.setNextRequest(nextRequest);",
+							"}",
+							"",
+							"//отладочный блок",
+							"if (pm.variables.get('debug')) {",
+							"    console.log('следующий запрос: ' + nextRequest);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{host}}/deal/show/{{deal_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"deal",
+						"show",
+						"{{deal_id}}"
+					]
+				},
+				"description": "Allows to get user deal list."
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8ca11e4-f9c0-41b0-a1f2-d05109b1eed2",
+						"exec": [
+							"//получаем тело ответа в формате JSON",
+							"var json = pm.response.json();",
+							"",
+							"//следующий запроса из коллекции",
+							"var nextRequest = null;",
+							"",
+							"if (json.status == \"SUCCESS\") {",
+							"    ",
+							"    //получаем идентификатор авто-теста",
+							"    var rounds = pm.variables.get('rounds');",
+							"    ",
+							"    //отладочный блок",
+							"    if (pm.variables.get('debug')) {",
+							"        console.log('количество циклов автотеста: ' + rounds);",
+							"    }",
+							"    ",
+							"    //определяем след. шаг авто-теста",
+							"    if (rounds != 0) {",
+							"        console.log('продолжаем автотест');",
+							"        ",
+							"        //переходим к первому (стартовому) запросу из коллекции",
+							"        nextRequest = 'login';",
+							"    }",
+							"    else",
+							"    {",
+							"        console.log('Завершение выполнения авто-теста \"' + pm.variables.get('test_id')",
+							"                    + ' ' + pm.variables.get('test_name') +'\"');",
+							"    }",
+							"}",
+							"",
+							"//проверяем что след. запрос определен",
+							"if (nextRequest) {",
+							"    //переходим к след. запросу из коллекции",
+							"    postman.setNextRequest(nextRequest);",
+							"    ",
+							"    //отладочный блок",
+							"    if (pm.variables.get('debug')) {",
+							"        console.log('следующий запрос: ' + nextRequest);",
+							"    }",
+							"}",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://{{host}}/logout",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1a9c394c-1b2e-423b-bd52-ba6d94eaf208",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "680f3638-ebce-46bc-bd5e-da5d481ce6cd",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response code is 200\", function() {",
+					"    pm.response.to.have.status(200);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "30cc5b92-adae-4ecb-9cab-7a260d3b08dd",
+			"key": "test_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "b2af1f26-614f-4c1b-80d7-ff6d641d6901",
+			"key": "test_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "9f565b58-b618-45b9-bae0-2850f36b7d70",
+			"key": "frst_user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "61978f82-3960-45f1-afae-ab7a584457ed",
+			"key": "scnd_user",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "449b022d-0eba-4ea5-8ad0-a4ee53cfb8dc",
+			"key": "rounds",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "881e37df-c5fb-4668-90b8-df3ae0ce3fbd",
+			"key": "last_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "1ca98612-eb6c-43cf-b7ba-605078f131e3",
+			"key": "first_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "694eda32-1c3a-4f8a-a3da-51cb58cec333",
+			"key": "secondary_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "27491f96-d20c-48d0-a2bf-dd12515fe7fd",
+			"key": "birth_date",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "bc00c0df-5add-4008-aa10-c52c6550c29d",
+			"key": "inn",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a00cdbdf-e26b-49e9-9bca-3b27bf20c908",
+			"key": "kpp",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "f028ef17-2afb-403d-9412-8906dceb2439",
+			"key": "nds_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "81ad725a-b16d-4ed7-94f4-dc312d3c02b9",
+			"key": "bik",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "31eb5ee1-2bb2-4522-b3db-6c818aed891a",
+			"key": "bank_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "8554a7dd-4406-4ab9-b6c5-0dcf43fe1257",
+			"key": "corr_account_number",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4c4e3653-e4e6-48fd-b9cf-ed52e46348e4",
+			"key": "deal_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7e7a5cda-cdea-451f-b441-d113de211a61",
+			"key": "deal_role",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7083c2c7-afb1-496b-8366-0974cb085adb",
+			"key": "name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "f65c7fca-df7c-4750-bfde-40bd795aa2ec",
+			"key": "addon_terms",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "8de5224d-91af-430f-bbc9-8658a5d76dba",
+			"key": "amount",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4e79da44-0e1e-4282-93f7-fa0da60c5fdb",
+			"key": "fee_payer_option",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "fc025c48-80c9-4fdc-9877-7ac3ccc9bb91",
+			"key": "delivery_period",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ea51683d-62df-4321-927a-a62352068993",
+			"key": "counteragent_email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "5e34deff-6937-40d7-9743-943e15a2e1a4",
+			"key": "civil_law_subject_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "5002cba0-6e42-4fcf-b013-99752ce0a90e",
+			"key": "legal_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "5bf645b7-e080-419c-a118-c7f809189a25",
+			"key": "legal_address",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "1e9bcfce-b3e3-4eb8-b29f-32364fe2efb0",
+			"key": "payment_method_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "3efdc5c8-f803-41f3-9e56-3fc6ec2f021b",
+			"key": "test_cycle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "bae2d254-b09c-49b8-b5b5-95507460a8a8",
+			"key": "test_case",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "60858ae9-a8e0-4e31-a5d1-264789a94507",
+			"key": "debug",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
