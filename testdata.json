@@ -120,6 +120,17 @@
 	"bank_name": "ПАО КБ ВОСТОЧНЫЙ",
 	"corr_account_number": "30101810700000000718"
 },{
+	"test_id": "AT01-12",
+	"test_case": "GP-T768",
+	"test_cycle": "GP-C4",
+	"test_name": "Ошибка при добавлении метода оплаты с БИК больше 9-ти символов",
+	"frst_user": "ravin",
+	"rounds": "0",
+	"name": "Метод Х",
+	"bik": "0410127189",
+	"bank_name": "ПАО КБ ВОСТОЧНЫЙ",
+	"corr_account_number": "30101810700000000718"
+},{
 	"test_id": "AT02-01",
 	"test_case": "GP-T744",
 	"test_cycle": "GP-C4",
