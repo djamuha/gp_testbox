@@ -142,6 +142,17 @@
 	"secondary_name":"",
 	"birth_date":"1971-08-13"
 },{
+	"test_id": "AT01-14",
+	"test_case": "GP-T770",
+	"test_cycle": "GP-C4",
+	"test_name": "Ошибка при добавлении метода оплаты с незаполненными обязательными параметрами",
+	"frst_user": "ravin",
+	"rounds": "0",
+	"name": "Метод Х",
+	"bik": "",
+	"bank_name": "",
+	"corr_account_number": ""
+},{
 	"test_id": "AT02-01",
 	"test_case": "GP-T744",
 	"test_cycle": "GP-C4",
