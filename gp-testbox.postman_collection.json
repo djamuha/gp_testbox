@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "e111914f-109a-4430-9302-204cfc5ea319",
+		"_postman_id": "888b82e9-ccd8-4bdb-89fc-f989abfd23ce",
 		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14",
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -228,7 +228,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"login\":\"{{user_test}}\",\"password\":\"{{password}}\",\"csrf\":\"{{csrf}}\"}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "http://{{host}}/auth/csrf-token",
@@ -1767,8 +1767,9 @@
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
 							"            pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"The input is more than 20 characters long\");",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The ERROR: ' + json.message + ' was received from back-end';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1781,8 +1782,9 @@
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
 							"            pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"The input is less than 20 characters long\");",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The ERROR: ' + json.message + ' was received from back-end';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1795,8 +1797,9 @@
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
 							"            //pm.expect(json.data.bik.stringLengthTooLong).to.eql(\"The input is less than 20 characters long\");",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The ERROR: ' + json.message + ' was received from back-end';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1809,8 +1812,9 @@
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
 							"            pm.expect(json.data.bik.stringLengthTooLong).to.eql(\"The input is more than 9 characters long\");",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The ERROR: ' + json.message + ' was received from back-end';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1827,8 +1831,9 @@
 							"            pm.expect(json.data.bik.isEmpty).to.eql(\"Value is required and can't be empty\");",
 							"            pm.expect(json.data.corr_account_number.isEmpty).to.eql(\"Value is required and can't be empty\");",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The ERROR: ' + json.message + ' was received from back-end';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1843,8 +1848,9 @@
 							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bik).to.eql(pm.variables.get('bik'));",
 							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.accountNumber).to.eql(pm.globals.get('account_number'));",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The payment method ID ' + payment_method_id + ' was added successfuly';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1859,8 +1865,9 @@
 							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.bik).to.eql(pm.variables.get('bik'));",
 							"            pm.expect(json.data.paymentMethod.paymentMethodBankTransfer.accountNumber).to.eql(pm.globals.get('account_number'));",
 							"            ",
-							"            //Pass - если все assertions успешно прошли",
+							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
+							"            testComment = 'The payment method ID ' + payment_method_id + ' was added successfuly';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -1907,6 +1914,11 @@
 							"    pm.sendRequest(testCaseResult, function (err, res) {",
 							"        console.log(err ? err :res.json());",
 							"    });",
+							"}",
+							"",
+							"if (testResult == 'Fail') {",
+							"    //выводим в лог сведения о неуспешности выполнения кейса",
+							"    console.log('[ERROR]: ' + pm.variables.get('test_id') + '.' + pm.variables.get('test_name') + ' was failed');",
 							"}"
 						],
 						"type": "text/javascript"
@@ -2610,181 +2622,181 @@
 	],
 	"variable": [
 		{
-			"id": "858f29c0-0487-458d-a8a2-d3a983852a14",
+			"id": "aae26b7a-64cd-4cf8-a75c-e12319fe2c55",
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6a2314fc-c47b-4a5e-b04c-e9087410f863",
+			"id": "4edf353e-f7cb-44b1-9337-df8a29fe76c7",
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "61d9a17b-0eb1-4034-84d7-298d39ac3cf7",
+			"id": "1a30ac3d-aa7d-40d3-8f55-05fcfd9decbd",
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f64b9422-1631-4ac0-97d8-36a9369a55aa",
+			"id": "348ce467-c271-43e1-8023-dad2c49f47f9",
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "3a2e9475-963a-4a5b-8c25-f7cc7d54988f",
+			"id": "de9c020e-aa75-4ed8-9b64-178e3f2c29bc",
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "cb68dc21-55d2-47bb-9a3a-1ada94b386ad",
+			"id": "29106144-2198-4ce0-b470-7428d66e5852",
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "17078166-0d7e-4ea4-a460-ed508ba715e4",
+			"id": "f68c5b03-bbf6-4197-af6d-87724a1f4e6c",
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9c3920c8-62fd-4a37-b92d-ddf5d5a33ab8",
+			"id": "bd4e892e-24ce-4c78-b0e4-c6ab22517c3b",
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6e6f52c1-41c1-4fc6-b18b-45c60bbe962e",
+			"id": "a7bd5921-07f8-47f9-b979-9964fc4ca282",
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5e80db5a-c7bc-43cd-a766-11d149a4fda9",
+			"id": "165dcb44-18fc-4974-b565-4b583e96a0b8",
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "3f815816-7f6d-4488-91ef-81e95f210e41",
+			"id": "7f786672-cb9e-480b-b77f-db2762d8162b",
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c9f5afc8-8e08-4655-ada3-6bea94c70831",
+			"id": "77126f43-8d77-4d64-9a77-070761ef01ed",
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f003184f-3e8c-4211-85a8-bc1608becba1",
+			"id": "3bc2d7aa-d5b5-408f-8f4d-c2d6e84b99ec",
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "0b9484fb-e356-4340-8b5b-12849ad1620f",
+			"id": "649d8adb-5a70-4153-aff1-21155bf2a0d7",
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5dbb7082-2f5b-480f-9022-6398205bf67c",
+			"id": "3daa7dab-b281-4600-b66e-3bd866a40401",
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9ca8da90-68b0-4eb2-a051-32bea412d3b1",
+			"id": "da52c16d-6e5d-4e2a-95dd-081d021b04c9",
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "532154b4-2e1c-4f86-99da-ac39f0d10cf0",
+			"id": "a9c4afb6-57f6-494f-adb0-6943f333e356",
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "8b324c99-3303-4a4c-a0f3-e5801a491f4e",
+			"id": "98027a72-a779-44a1-9eba-49d8c3251e2a",
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "156fe57d-d248-4f06-8f0d-da895ad68f8c",
+			"id": "c67ec729-b213-4ae6-95c1-11367e7c74b0",
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4bc5e52f-8d8a-4664-9ee3-8f5b3bcac0c0",
+			"id": "52852c19-0392-41ce-8299-1f58471cd6b0",
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6edcb9cd-0079-4f66-9565-9cbfe327bfa9",
+			"id": "c97e2beb-8f2a-498a-9bcb-703468eb8206",
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "38ab2828-dcd1-4c41-bea7-7d110a794325",
+			"id": "9207ccaa-542e-48b2-add1-bdd6a6e4f8a4",
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d490edd3-33a4-471e-862e-aae33c3cd59e",
+			"id": "cd39a8a9-a638-4e7b-af4a-cadf1f001136",
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "975d9e31-9d84-40e1-a5e1-5d79371d904d",
+			"id": "88bab86d-0787-48bb-abfd-cc559e168d55",
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "7ecc1892-41c3-4d5d-b87c-a793106aafa4",
+			"id": "cf3128ef-93a9-45b1-9fd5-2bf90db70c78",
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "1a111ccf-6a4c-405c-a6e0-bd95d4043d23",
+			"id": "71c19e3c-ca59-4d76-96e3-bedde13b0638",
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e2568ec6-2c5e-4a9c-9f84-18f5dc6d90ba",
+			"id": "04d698cf-77f5-4cc5-a8ca-cb39b5f50f35",
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9bdac0bc-462a-440e-92b0-e2927a72c604",
+			"id": "15f7b164-8e5f-48ec-b29c-c99c4e69d219",
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "53cd79fa-e9e2-4ab3-8a81-04e071a4a23e",
+			"id": "73fa6d03-95a7-46b5-b526-e43466c2456d",
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "0cc6fc61-e3c9-40c0-9a44-a958430b37c6",
+			"id": "5a2265f8-706b-4f4c-a581-1e46f998df7d",
 			"key": "debug",
 			"value": "",
 			"type": "string"
