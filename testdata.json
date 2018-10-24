@@ -284,4 +284,24 @@
 	"bank_name":"ПАО КБ ВОСТОЧНЫЙ",
 	"corr_account_number":"30101810700000000718",
 	"payment_method_type":"bank_transfer"
+},{ 
+	"test_id": "AT04-04",
+	"test_case": "GP-T776",
+	"test_cycle": "GP-C4",
+	"test_name": "Ошибка при добавлении сервисной сделки без типа доставки",
+	"frst_user": "ravin",
+	"rounds": "0",
+	"deal_type": "1",
+	"deal_role": "contractor",
+	"name": "Сделка Х",
+	"addon_terms": "Хороший заказ",
+	"amount": "777",
+	"fee_payer_option": "1",
+	"delivery_period": "7",
+	"counteragent_email": "fiksber90@mail.ru",
+	"last_name": "Балван",
+	"first_name":"Бедокур",
+	"secondary_name":"Степаныч",
+	"birth_date":"1970-02-03",
+	"civil_law_subject_type":"natural_person"
 }]
