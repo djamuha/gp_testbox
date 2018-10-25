@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "e968a437-2e64-4921-9be1-785e9a32ff30",
+		"_postman_id": "4fdb3061-b8c6-48f9-8978-27311f802299",
 		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method",
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -67,7 +67,7 @@
 							"if (test_id == 'AT01-02' || test_id == 'AT01-03' || test_id == 'AT01-10' || test_id == 'AT01-11' || test_id == 'AT01-12' || test_id == 'AT01-14') {",
 							"    test_id = 'AT01-X2';",
 							"}",
-							"if (test_id == 'AT04-01' || test_id == 'AT04-02' || test_id == 'AT04-03' || 'AT04-04') {",
+							"if (test_id == 'AT04-01' || test_id == 'AT04-02' || test_id == 'AT04-03' || test_id == 'AT04-04') {",
 							"    test_id = 'AT04-X1';",
 							"}",
 							"",
@@ -2238,7 +2238,7 @@
 							"        },",
 							"        body: {",
 							"            mode: 'raw',",
-							"            raw:  JSON.stringify({\"status\": testResult})",
+							"            raw:  JSON.stringify({\"status\": testResult, \"comment\": testComment})",
 							"        }",
 							"    };",
 							"    ",
@@ -2295,7 +2295,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"csrf\":\"{{csrf}}\"\r\n,\"deal_type\":\"{{deal_type}}\"\r\n,\"deal_role\":\"{{deal_role}}\"\r\n,\"name\":\"{{name}}\"\r\n,\"addon_terms\":\"{{addon_terms}}\"\r\n,\"amount\":\"{{amount}}\"\r\n,\"fee_payer_option\":\"{{fee_payer_option}}\"\r\n,\"delivery_period\":\"{{delivery_period}}\"\r\n,\"counteragent_email\":\"{{counteragent_email}}\"\r\n,\"deal_civil_law_subject\":\r\n\t{ \"name\":\"{{legal_name}}\"\r\n\t, \"legal_address\":\"{{legal_address}}\"\r\n\t, \"inn\":\"{{inn}}\"\r\n\t, \"kpp\":\"{{kpp}}\"\r\n\t, \"nds_type\":\"{{nds_type}}\"\r\n\t, \"last_name\":\"{{last_name}}\"\r\n\t, \"first_name\":\"{{first_name}}\"\r\n\t, \"secondary_name\":\"{{secondary_name}}\"\r\n\t, \"birth_date\":\"{{birth_date}}\"\r\n\t, \"civil_law_subject_type\":\"{{civil_law_subject_type}}\"\r\n\t}\r\n, \"payment_method\":\r\n\t{ \"name\":\"\"\r\n\t, \"bik\":\"041012718\"\r\n\t, \"bank_name\": \"{{bank_name}}\"\r\n\t, \"account_number\": \"{{account_number}}\"\r\n\t, \"corr_account_number\": \"{{corr_account_number}}\"\r\n\t, \"civil_law_subject_id\": \"\"\r\n\t, \"payment_method_type\": \"{{payment_method_type}}\"\r\n\t, \"payment_method\": \"\"\r\n\t}\r\n,\"deal_confirm\":\"true\"\r\n}"
+					"raw": "{\"csrf\":\"{{csrf}}\"\r\n,\"deal_type\":\"{{deal_type}}\"\r\n,\"deal_role\":\"{{deal_role}}\"\r\n,\"name\":\"{{name}}\"\r\n,\"addon_terms\":\"{{addon_terms}}\"\r\n,\"amount\":\"{{amount}}\"\r\n,\"fee_payer_option\":\"{{fee_payer_option}}\"\r\n,\"delivery_period\":\"{{delivery_period}}\"\r\n,\"delivery\":\r\n\t{ \"service_type\": \"{{service_type}}\"\r\n\t, \"terms_of_delivery\": \"{{terms_of_delivery}}\"\r\n\t, \"service\":\r\n\t\t  { \"payment_type\": \"{{payment_type}}\"\r\n\t\t  , \"service_code\": \"{{service_code}}\"\r\n\t\t  , \"parcel_quantity\": \"{{parcel_quantity}}\"\r\n\t\t  , \"delivery_time_period\": \"{{delivery_time_period}}\"\r\n\t\t  , \"pickup_time_period\": \"{{pickup_time_period}}\"\r\n\t\t  , \"cargo_category\": \"{{cargo_category}}\"\r\n\t\t  , \"receiver_address\":\r\n\t\t\t    { \"city_id\": \"{{city_id}}\"\r\n\t\t\t    , \"street\": \"{{street}}\"\r\n\t\t\t    , \"house\": \"{{house}}\"\r\n\t\t\t    , \"flat\": \"{{flat}}\"\r\n\t\t\t    , \"contact_fio\": \"{{contact_fio}}\"\r\n\t\t\t    , \"contact_phone\": \"{{contact_phone}}\"\r\n\t\t\t    , \"contact_email\": \"{{contact_email}}\"\r\n\t\t\t    }\r\n\t\t  }\r\n\t}\r\n,\"counteragent_email\":\"{{counteragent_email}}\"\r\n,\"deal_civil_law_subject\":\r\n\t{ \"name\":\"{{legal_name}}\"\r\n\t, \"legal_address\":\"{{legal_address}}\"\r\n\t, \"inn\":\"{{inn}}\"\r\n\t, \"kpp\":\"{{kpp}}\"\r\n\t, \"nds_type\":\"{{nds_type}}\"\r\n\t, \"last_name\":\"{{last_name}}\"\r\n\t, \"first_name\":\"{{first_name}}\"\r\n\t, \"secondary_name\":\"{{secondary_name}}\"\r\n\t, \"birth_date\":\"{{birth_date}}\"\r\n\t, \"civil_law_subject_type\":\"{{civil_law_subject_type}}\"\r\n\t}\r\n, \"payment_method\":\r\n\t{ \"name\":\"\"\r\n\t, \"bik\":\"041012718\"\r\n\t, \"bank_name\": \"{{bank_name}}\"\r\n\t, \"account_number\": \"{{account_number}}\"\r\n\t, \"corr_account_number\": \"{{corr_account_number}}\"\r\n\t, \"civil_law_subject_id\": \"\"\r\n\t, \"payment_method_type\": \"{{payment_method_type}}\"\r\n\t, \"payment_method\": \"\"\r\n\t}\r\n,\"deal_confirm\":\"true\"\r\n}"
 				},
 				"url": {
 					"raw": "http://{{host}}/deal/create",
@@ -2644,182 +2644,272 @@
 	],
 	"variable": [
 		{
-			"id": "00c83dcd-cdae-4266-aa57-6c96a04c2fb7",
+			"id": "61d00a4c-37b7-4625-b8f2-06d63cc1c3dc",
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "14ce1e4e-7526-4ff7-816d-2670cd27bd06",
+			"id": "03a9ffb1-4c18-4b93-8818-17bac31cb9ae",
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "206bb82e-bd27-496c-aad7-483b70bf0a7d",
+			"id": "7b0eff52-5ba9-4438-8e38-7c44acff6695",
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "fb3c270a-fbb4-4a4f-86d7-85ead597c4fd",
+			"id": "dc05cb50-8370-43d2-95cc-9546255fb434",
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "1f81c1cc-38d7-48d9-8b2f-5a3bc036d498",
+			"id": "5d1b764b-980b-4df7-8bb4-f733c0bed863",
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f7188689-9ecb-4aff-aa5f-f5f1f4ad85ec",
+			"id": "80ccdcb3-c4d6-4d9a-93ff-3d233eac9dce",
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "23e3155b-c955-4b2c-83a0-aa8e59d59038",
+			"id": "6adae62c-2a36-4090-b92d-87c7129dd670",
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "2fd68b35-bd43-4037-967f-d172dc96ecdc",
+			"id": "26cba72d-1b6d-428a-8daa-bf30dc77f6f9",
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "358ba7b3-955a-4264-b48e-1dd6b559bc03",
+			"id": "1083cc0f-0532-4324-a6f9-ac001e995318",
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "2e304cbf-6ddb-4ac2-96f6-9c3e8b03c664",
+			"id": "aa78d9a8-0fa9-4087-ba04-ad427747d4b5",
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "97f37beb-96a4-4888-8e8a-71a645edb6a9",
+			"id": "915a790a-f942-4868-8e8c-2e630c1482f8",
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b856577f-3e13-40f4-9bb9-1654ae5f804e",
+			"id": "7e985193-a5ee-41b7-bf18-9d0d1b7f8174",
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "49fb92fd-0733-408d-967d-5d814496d19c",
+			"id": "6396d055-b19e-41c7-a131-479f110ef625",
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "78a28be8-07b2-4e03-a71d-5ec45655ceaa",
+			"id": "abdca07b-781d-413a-b9a3-0a6635119afc",
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "677d9b10-613b-410e-98e8-3652a1dc7f32",
+			"id": "98c4ff0d-b176-4005-84d6-d136572caf31",
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "547fbe41-f8d3-4355-943a-f8aabc638410",
+			"id": "bfd6f468-0e84-4cfe-95fe-27fc7ecace87",
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a6741c0d-53db-42d0-b554-366cbc56e349",
+			"id": "33c20940-d529-4522-936c-5dcd9479486d",
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "fffe03b4-d018-4052-b722-cd09fb59382d",
+			"id": "dd60ac66-f779-431c-a536-b4ee59b16333",
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b7c5b075-4079-4db1-bf67-5c62f11ddeed",
+			"id": "653a9a79-44df-4804-87e5-eb81625760e0",
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "54c1d816-8083-4ef8-b0dd-56667d7c8b1e",
+			"id": "bd21059e-d1ec-4141-a511-c87b7f684231",
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d05c7bde-cacb-424e-80e9-5da63272424e",
+			"id": "bde0bc25-8535-46e4-a26f-e881540c75e1",
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "86cf0bf7-228f-4e67-b7fc-fec90ebd4b59",
+			"id": "271ebe7d-5a36-4bdf-b1b1-6259d27be975",
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c6f1f861-d076-402d-b61c-d97168b951d7",
+			"id": "61bf8a9b-7fcd-4e74-8798-2145d51e812d",
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d5349fd6-276a-4cd7-95e9-0445a73864b6",
+			"id": "c9d3eae9-056c-4ea4-92ea-528d74e6b575",
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "123133e8-64a4-4993-87e3-87e0bd9e796a",
+			"id": "d9c1710b-d883-493d-b7a4-ca3f6c518ee7",
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "67cad0a6-6fa4-4cfc-8796-d4600b12f1e5",
+			"id": "dd5f446f-a5df-4918-926d-92a6d2ffe367",
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9de892a9-a4ef-45c7-bd2e-502ae23cc7e1",
+			"id": "f477f234-423a-4865-a102-0c6d9d0584db",
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a75a902d-d9cf-4de5-84e2-89d0794ec125",
+			"id": "34ca3955-62dc-475b-96b1-71726e010568",
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d11c0641-d39b-4363-93e7-4cbcb64e51cc",
+			"id": "9e674d78-145e-4d2b-86c7-0e2271d0fc2e",
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "05905079-426e-4d0e-9f4f-3aeee523672e",
+			"id": "4a8af6d8-dc58-4d04-a69c-fddd98efeb9d",
 			"key": "debug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "e89434f3-c28a-4e48-ad13-0d81422dd564",
+			"key": "service_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "db5e4cd3-cc49-405c-8113-23e73b9e7d58",
+			"key": "terms_of_delivery",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "187c6617-8e0e-4c75-8633-f756f8cc152d",
+			"key": "payment_type",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4dc23893-dbf8-46df-8103-a14d2360b6c0",
+			"key": "service_code",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "df4a1036-9bd0-4715-af51-e4d88834db48",
+			"key": "parcel_quantity",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a4a3d1fe-f8ef-49b7-9dc0-f67b2198e30c",
+			"key": "delivery_time_period",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "b6312476-09b6-485d-83e6-9f080994da8c",
+			"key": "pickup_time_period",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "bca5731e-7a50-421f-9de0-f3d6f8b6a239",
+			"key": "cargo_category",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "5d7f8bac-aeff-43f5-ae1a-c99e01b52758",
+			"key": "city_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "34e0c4c6-c389-4853-86d4-1f0c9706f98b",
+			"key": "street",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "14182736-80bb-4923-b256-1d670dcfa34e",
+			"key": "house",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d1a293e6-21db-4e63-ac4b-0aa57efd7664",
+			"key": "flat",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "2994142c-88a8-4f03-8cd4-f3b9cab4ecfc",
+			"key": "contact_fio",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "9eaefee4-21dd-4809-8bea-eb174f6a1d35",
+			"key": "contact_phone",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "e975a8d1-08e6-40d8-93b6-896aae610772",
+			"key": "contact_email",
 			"value": "",
 			"type": "string"
 		}
