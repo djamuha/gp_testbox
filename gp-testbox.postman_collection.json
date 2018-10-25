@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "4fdb3061-b8c6-48f9-8978-27311f802299",
+		"_postman_id": "d7d9449e-c42f-42c0-9adc-19eef348d2ba",
 		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request",
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n- Added new assertion (check delivery type) in AT04-01 POST create request\n- Fixed AT04-02 assertions according new development for POST deal/create request",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2046,8 +2046,8 @@
 							"//следующий запроса из коллекции",
 							"var nextRequest = null;",
 							"",
-							"//результат теста - по умолчанию равен 'Failed'",
-							"var testResult = 'Fail';",
+							"//результат теста",
+							"var testResult;",
 							"",
 							"//комментарий для результата теста",
 							"var testComment = \"Response status: \" + json.status + \"; message: \" + json.message;",
@@ -2093,15 +2093,11 @@
 							"        //проверка участия в качестве физ.лица по сделке",
 							"        pm.test('response body contains added natural person', function() {",
 							"            pm.expect(json.data.deal.customer.is_natural_person).to.eql(true);",
-							"            ",
-							"            //сохраняем id созданного субъекта права в глоб. контекст",
-							"            pm.globals.set('civil_law_subject_id', json.data.deal.customer.civil_law_subject_id);",
-							"            ",
-							"            //отладочный блок",
-							"            if (pm.variables.get('debug')) {",
-							"                console.log('ид субъекта права: ' + pm.globals.get('civil_law_subject_id'));",
-							"            }",
-							"            ",
+							"        });",
+							"        ",
+							"        //проверка способа доставки товара как DPD",
+							"        pm.test('response body contains delivery type DPD', function () {",
+							"           pm.expect(json.data.deal.delivery.service_type_name).to.eql('DPD');",
 							"        });",
 							"        ",
 							"        //проверка авто-подтверждения сделки при создании",
@@ -2110,7 +2106,7 @@
 							"            ",
 							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
-							"            testComment = 'The deal ID ' + deal_id + ' was added successfuly';",
+							"            testComment = 'The deal ID = ' + deal_id + ' was added successfuly. The deal service type is \"' + json.data.deal.delivery.service_type_name + '\".';",
 							"        });",
 							"        ",
 							"        //определяем след. запрос из коллекции",
@@ -2644,271 +2640,271 @@
 	],
 	"variable": [
 		{
-			"id": "61d00a4c-37b7-4625-b8f2-06d63cc1c3dc",
+			"id": "76426c16-825e-4b8c-abec-b9c5d5bb8974",
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "03a9ffb1-4c18-4b93-8818-17bac31cb9ae",
+			"id": "677f1a0e-d7a5-403c-87cd-283ca6990932",
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "7b0eff52-5ba9-4438-8e38-7c44acff6695",
+			"id": "608089ab-6871-478d-834d-4d69256df78f",
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dc05cb50-8370-43d2-95cc-9546255fb434",
+			"id": "dfc0c21e-dc3f-4a41-8dc0-d0633fdafd8d",
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5d1b764b-980b-4df7-8bb4-f733c0bed863",
+			"id": "dbd65190-a7fe-4851-92ff-e9e83727c72e",
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "80ccdcb3-c4d6-4d9a-93ff-3d233eac9dce",
+			"id": "a87be916-a41a-4a1e-9adf-fe27aad3c564",
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6adae62c-2a36-4090-b92d-87c7129dd670",
+			"id": "48501aec-2c93-46b4-b49e-d9e5388690a0",
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "26cba72d-1b6d-428a-8daa-bf30dc77f6f9",
+			"id": "f44a8504-c445-4c85-bcd8-351fb0e65da6",
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "1083cc0f-0532-4324-a6f9-ac001e995318",
+			"id": "a0ccdb17-2289-4535-a73f-f7142bbcc416",
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "aa78d9a8-0fa9-4087-ba04-ad427747d4b5",
+			"id": "98607799-070b-4fd8-830c-092aee047ab4",
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "915a790a-f942-4868-8e8c-2e630c1482f8",
+			"id": "6854d6d5-43b8-43d1-9b1b-4286f4ed44fb",
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "7e985193-a5ee-41b7-bf18-9d0d1b7f8174",
+			"id": "919a2570-b818-49a0-859f-651a24eb97b3",
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6396d055-b19e-41c7-a131-479f110ef625",
+			"id": "052f4506-197c-4de9-ba98-3adfd594bd96",
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "abdca07b-781d-413a-b9a3-0a6635119afc",
+			"id": "efd0410e-ab7f-49d3-abd3-dbf9b36c4a8b",
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "98c4ff0d-b176-4005-84d6-d136572caf31",
+			"id": "165abfd5-b5cb-4860-b403-c73e3bc90cb2",
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bfd6f468-0e84-4cfe-95fe-27fc7ecace87",
+			"id": "9208c926-433e-4c89-944a-7b550e122466",
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "33c20940-d529-4522-936c-5dcd9479486d",
+			"id": "c670d380-3577-4ad6-aa1e-afe40f2ad82d",
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dd60ac66-f779-431c-a536-b4ee59b16333",
+			"id": "0bfa439f-c81c-4aa6-95fc-c236a96b42e7",
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "653a9a79-44df-4804-87e5-eb81625760e0",
+			"id": "fb206627-00e5-45fc-a062-43fc0e4cd526",
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bd21059e-d1ec-4141-a511-c87b7f684231",
+			"id": "a41ad49e-0f5d-45cc-91ba-8ca3f2873bdb",
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bde0bc25-8535-46e4-a26f-e881540c75e1",
+			"id": "075572bd-11c2-4609-9da6-fbe0622d131e",
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "271ebe7d-5a36-4bdf-b1b1-6259d27be975",
+			"id": "38ab3e76-2a1d-4f1a-9c5c-de2207e2a976",
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "61bf8a9b-7fcd-4e74-8798-2145d51e812d",
+			"id": "77ddcdf9-e48b-4817-abde-adee5f72b835",
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c9d3eae9-056c-4ea4-92ea-528d74e6b575",
+			"id": "e7c2eebc-7095-4bf9-b00d-120d7cd92f67",
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d9c1710b-d883-493d-b7a4-ca3f6c518ee7",
+			"id": "159a010d-9ce1-41a3-811f-3c41c3a1cef1",
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dd5f446f-a5df-4918-926d-92a6d2ffe367",
+			"id": "aee81368-a427-4825-8847-8a815628cfe2",
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f477f234-423a-4865-a102-0c6d9d0584db",
+			"id": "999f82db-49a0-4243-b6a2-df8a195b52e5",
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "34ca3955-62dc-475b-96b1-71726e010568",
+			"id": "d1e1f8f4-3ce5-4e14-9700-67ae3147ae77",
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9e674d78-145e-4d2b-86c7-0e2271d0fc2e",
+			"id": "c25ef2fe-f1a3-4e55-8c5c-80e095686f15",
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4a8af6d8-dc58-4d04-a69c-fddd98efeb9d",
+			"id": "4ca7b4ea-24be-4990-9072-cd81cd5dc983",
 			"key": "debug",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e89434f3-c28a-4e48-ad13-0d81422dd564",
+			"id": "020093c8-0bd5-4deb-a902-d6242be9ce6b",
 			"key": "service_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "db5e4cd3-cc49-405c-8113-23e73b9e7d58",
+			"id": "f840f10b-c781-41c2-9aca-9780f387d2b6",
 			"key": "terms_of_delivery",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "187c6617-8e0e-4c75-8633-f756f8cc152d",
+			"id": "aff33c36-64b0-4b2b-980a-0fab5e64e75a",
 			"key": "payment_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4dc23893-dbf8-46df-8103-a14d2360b6c0",
+			"id": "fe38ff85-2e7d-486d-8caa-34c738184842",
 			"key": "service_code",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "df4a1036-9bd0-4715-af51-e4d88834db48",
+			"id": "e203463c-04f9-4482-8ed6-b8c68c8dfd5c",
 			"key": "parcel_quantity",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a4a3d1fe-f8ef-49b7-9dc0-f67b2198e30c",
+			"id": "f0d84a18-a0bd-4f71-9269-ec4c3d58921e",
 			"key": "delivery_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b6312476-09b6-485d-83e6-9f080994da8c",
+			"id": "cdde5873-f1f3-47d3-b4d4-2c715645cae1",
 			"key": "pickup_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bca5731e-7a50-421f-9de0-f3d6f8b6a239",
+			"id": "10bce25d-911e-486d-a247-96aa26a83e8f",
 			"key": "cargo_category",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5d7f8bac-aeff-43f5-ae1a-c99e01b52758",
+			"id": "9abe5c66-bf63-402c-a6a5-b475d089cc21",
 			"key": "city_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "34e0c4c6-c389-4853-86d4-1f0c9706f98b",
+			"id": "15e91184-cca9-4c76-919b-c4bc99b1ebd2",
 			"key": "street",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "14182736-80bb-4923-b256-1d670dcfa34e",
+			"id": "9057c0da-c70c-4e5e-81a6-fae1f5321fdd",
 			"key": "house",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d1a293e6-21db-4e63-ac4b-0aa57efd7664",
+			"id": "84e641b7-7721-4f4c-88ed-60e9f60dec92",
 			"key": "flat",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "2994142c-88a8-4f03-8cd4-f3b9cab4ecfc",
+			"id": "4c25a0db-743c-41c3-9463-f5a3a051ac01",
 			"key": "contact_fio",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9eaefee4-21dd-4809-8bea-eb174f6a1d35",
+			"id": "b2bab9a8-c8a6-4440-ab6b-2ba01bb759ed",
 			"key": "contact_phone",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e975a8d1-08e6-40d8-93b6-896aae610772",
+			"id": "4bbee18c-7b3c-4baf-b669-d6ea30fd60ef",
 			"key": "contact_email",
 			"value": "",
 			"type": "string"

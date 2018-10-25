@@ -261,6 +261,7 @@
 	"amount": "777",
 	"fee_payer_option": "1",
 	"delivery_period": "1",
+	"service_type": "2",
 	"counteragent_email": "fiksber90@mail.ru",
 	"legal_name": "ЗАО Святого патрика",
 	"legal_address": "191002, Санкт-Петербург, ул. Достоевского, д. 24/9, ЛИТ. А, ПОМ. 3Н",
