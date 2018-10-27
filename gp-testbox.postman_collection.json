@@ -2081,7 +2081,7 @@
 							"",
 							"switch (test_id) {",
 							"    case 'AT04-01':",
-							"        //проверка сведений по созданной сделке",
+							"        //проверка основных сведений по созданной сделке в теле ответа",
 							"        pm.test('response body contains added deal', function () {",
 							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
 							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
@@ -2090,7 +2090,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в качестве физ.лица по сделке",
+							"        //проверка участия в сделка как физ.лицо",
 							"        pm.test('response body contains added natural person', function() {",
 							"            pm.expect(json.data.deal.customer.is_natural_person).to.eql(true);",
 							"            ",
@@ -2104,7 +2104,7 @@
 							"            ",
 							"        });",
 							"        ",
-							"        //проверка авто-подтверждения сделки при создании",
+							"        //проверка авто-подтверждения сделки при создании (ключевой assertion)",
 							"        pm.test('response body contains confirm by customer', function () {",
 							"            pm.expect(json.data.deal.customer.is_confirmed).to.eql(true);",
 							"            ",
@@ -2118,7 +2118,7 @@
 							"        break;",
 							"        ",
 							"    case 'AT04-02':",
-							"        //проверка сведений по созданной сделке",
+							"        //проверка основных сведений по созданной сделке в теле ответа",
 							"        pm.test('response body contains added deal', function () {",
 							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
 							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
@@ -2127,7 +2127,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в качестве юр.лица по сделке",
+							"        //проверка участия в сделке как юр.лица",
 							"        pm.test('response body contains added legal entity', function() {",
 							"            pm.expect(json.data.deal.contractor.is_legal_entity).to.eql(true);",
 							"            ",
@@ -2163,7 +2163,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в качестве ип по сделке",
+							"        //проверка участия в сделке как ИП",
 							"        pm.test('response body contains added sole proprietor', function() {",
 							"            pm.expect(json.data.deal.contractor.is_sole_proprietor).to.eql(true) ;",
 							"           ",
@@ -2193,7 +2193,6 @@
 							"        //проверка информации об ошибке в теле ответа",
 							"        pm.test('response body contains error and empty parameter delivery.service_type', function () {",
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
-							"            ",
 							"            pm.expect(json.data.deal.delivery.service_type.isEmpty).to.eql(\"Value is required and can't be empty\");",
 							"           ",
 							"           //Pass - если все assertions успешно прошли + комментарий",
@@ -2644,271 +2643,271 @@
 	],
 	"variable": [
 		{
-			"id": "61d00a4c-37b7-4625-b8f2-06d63cc1c3dc",
+			"id": "9330526c-489c-4ff1-a5d4-b87a40db49b1",
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "03a9ffb1-4c18-4b93-8818-17bac31cb9ae",
+			"id": "124542d5-dd69-4d7a-85ec-b6f6c8a5fc00",
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "7b0eff52-5ba9-4438-8e38-7c44acff6695",
+			"id": "a72b5112-23ae-49b6-af15-47cb3f9a1869",
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dc05cb50-8370-43d2-95cc-9546255fb434",
+			"id": "4d556088-b02e-4f0d-b318-10d55d851194",
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5d1b764b-980b-4df7-8bb4-f733c0bed863",
+			"id": "7c58ef94-b3bd-4e3a-bd72-d2a64b5cfaa4",
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "80ccdcb3-c4d6-4d9a-93ff-3d233eac9dce",
+			"id": "32b0badf-13a8-4520-b5ef-79060a7e2066",
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6adae62c-2a36-4090-b92d-87c7129dd670",
+			"id": "421d147a-2a42-4c6a-9f80-0ae5e3660a8c",
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "26cba72d-1b6d-428a-8daa-bf30dc77f6f9",
+			"id": "f8b03c85-eeca-4bd7-8c2c-2cf5f39cf4af",
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "1083cc0f-0532-4324-a6f9-ac001e995318",
+			"id": "bdbf948a-a55a-4625-9361-10ce7b84f40c",
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "aa78d9a8-0fa9-4087-ba04-ad427747d4b5",
+			"id": "c7165282-6848-4747-a8cb-abb066e438be",
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "915a790a-f942-4868-8e8c-2e630c1482f8",
+			"id": "812f226b-8266-49fb-b728-d930ad5f0cb5",
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "7e985193-a5ee-41b7-bf18-9d0d1b7f8174",
+			"id": "b1485c48-8969-4275-aff0-212b7f8a5b0b",
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6396d055-b19e-41c7-a131-479f110ef625",
+			"id": "5d0e48d6-a6f0-468e-a697-0ac407af74ec",
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "abdca07b-781d-413a-b9a3-0a6635119afc",
+			"id": "9982dfa5-9649-4602-8ca0-11f4fda392dd",
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "98c4ff0d-b176-4005-84d6-d136572caf31",
+			"id": "2cb45d08-13b5-4852-b4ae-fdf3ceb9085c",
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bfd6f468-0e84-4cfe-95fe-27fc7ecace87",
+			"id": "966a855e-4b07-4db8-8579-bac4bb88c5d9",
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "33c20940-d529-4522-936c-5dcd9479486d",
+			"id": "79a9fece-0851-48ef-a02a-d4382b0a4e15",
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dd60ac66-f779-431c-a536-b4ee59b16333",
+			"id": "e244554a-ad74-4801-a805-7abc989b69ab",
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "653a9a79-44df-4804-87e5-eb81625760e0",
+			"id": "f58a8567-4637-4aa6-aab0-1d6b8e0bc99b",
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bd21059e-d1ec-4141-a511-c87b7f684231",
+			"id": "f151aeec-c3e5-4e6c-bc84-59387841973f",
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bde0bc25-8535-46e4-a26f-e881540c75e1",
+			"id": "2a36e9e2-a882-4f09-80c6-aa17560049b0",
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "271ebe7d-5a36-4bdf-b1b1-6259d27be975",
+			"id": "f3b08cea-61ac-4f32-b5b1-65658aac57c8",
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "61bf8a9b-7fcd-4e74-8798-2145d51e812d",
+			"id": "378cb6a3-00e1-45ed-97ac-1f8a1edc66fb",
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c9d3eae9-056c-4ea4-92ea-528d74e6b575",
+			"id": "e88a1c4f-2b2c-4ef6-90a9-3a86f900e24e",
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d9c1710b-d883-493d-b7a4-ca3f6c518ee7",
+			"id": "116c1e4e-bb33-4f07-a600-9a3ba9c669a5",
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dd5f446f-a5df-4918-926d-92a6d2ffe367",
+			"id": "651cb0a4-7205-41f3-ad75-5301d171db03",
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f477f234-423a-4865-a102-0c6d9d0584db",
+			"id": "54394ceb-77f5-4cb4-b199-c9c7fde5dbee",
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "34ca3955-62dc-475b-96b1-71726e010568",
+			"id": "592d6a38-72f4-45e7-b06f-210b76b50a2d",
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9e674d78-145e-4d2b-86c7-0e2271d0fc2e",
+			"id": "1a064c16-18e4-4753-b06e-93ced9fbe944",
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4a8af6d8-dc58-4d04-a69c-fddd98efeb9d",
+			"id": "e47fdb75-f9b8-4f6e-a211-1d2f2343fb00",
 			"key": "debug",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e89434f3-c28a-4e48-ad13-0d81422dd564",
+			"id": "071191f7-c716-4d1d-8cd6-0eb482942ebd",
 			"key": "service_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "db5e4cd3-cc49-405c-8113-23e73b9e7d58",
+			"id": "b5990925-54e3-4fc2-adb1-5deacb80d38a",
 			"key": "terms_of_delivery",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "187c6617-8e0e-4c75-8633-f756f8cc152d",
+			"id": "c7ad037d-9fd7-4ade-8ac4-13053f005b98",
 			"key": "payment_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4dc23893-dbf8-46df-8103-a14d2360b6c0",
+			"id": "113389b2-e667-48ab-960c-05b80f6cbc1f",
 			"key": "service_code",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "df4a1036-9bd0-4715-af51-e4d88834db48",
+			"id": "3d3a9685-96b9-4a3f-93ee-abc33dc1b2df",
 			"key": "parcel_quantity",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a4a3d1fe-f8ef-49b7-9dc0-f67b2198e30c",
+			"id": "d7a263da-f6c2-4dd9-9a2c-156463318904",
 			"key": "delivery_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b6312476-09b6-485d-83e6-9f080994da8c",
+			"id": "b41736e8-76fd-4856-bb09-4aee3e8444f5",
 			"key": "pickup_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "bca5731e-7a50-421f-9de0-f3d6f8b6a239",
+			"id": "e7af1b12-cbd9-4229-88e8-89a0cbf95969",
 			"key": "cargo_category",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "5d7f8bac-aeff-43f5-ae1a-c99e01b52758",
+			"id": "b228d8e1-ae89-42eb-aaae-eaf194954fcc",
 			"key": "city_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "34e0c4c6-c389-4853-86d4-1f0c9706f98b",
+			"id": "571c76a2-324a-4009-8ff8-4f4e7f164ee1",
 			"key": "street",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "14182736-80bb-4923-b256-1d670dcfa34e",
+			"id": "ee62f452-97e3-4a9d-af5d-4bf6b9f08d39",
 			"key": "house",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d1a293e6-21db-4e63-ac4b-0aa57efd7664",
+			"id": "e9877c2f-1515-4da0-a33a-676fca2d74bf",
 			"key": "flat",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "2994142c-88a8-4f03-8cd4-f3b9cab4ecfc",
+			"id": "db2cac40-905c-4019-bf76-b63a30f68ced",
 			"key": "contact_fio",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9eaefee4-21dd-4809-8bea-eb174f6a1d35",
+			"id": "426baa89-8229-4b5b-be5d-050dababe085",
 			"key": "contact_phone",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e975a8d1-08e6-40d8-93b6-896aae610772",
+			"id": "8213a08d-615d-4b67-9602-b70a54cb679f",
 			"key": "contact_email",
 			"value": "",
 			"type": "string"
