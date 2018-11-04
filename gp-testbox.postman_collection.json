@@ -1,14 +1,8 @@
 {
 	"info": {
-<<<<<<< HEAD
-		"_postman_id": "90cfdbf6-5282-4fe3-89e5-f029f7dcad36",
+		"_postman_id": "4ea056fe-e9ea-4696-a923-ae2a59f7f28c",
 		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n\nversion 6.2\n- replace auto-test groups to unite case operators (without using break)",
-=======
-		"_postman_id": "d7d9449e-c42f-42c0-9adc-19eef348d2ba",
-		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n- Added new assertion (check delivery type) in AT04-01 POST create request\n- Fixed AT04-02 assertions according new development for POST deal/create request",
->>>>>>> refs/remotes/origin/dev
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n- Added new assertion (check delivery type) in AT04-01 POST create request\n- Fixed AT04-02 assertions according new development for POST deal/create request\n- \n\nversion 6.2\n- Fixed AT01-10\n- Fixed code block where using switch operator\n- Added AT02-03",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -66,7 +60,7 @@
 							" var test_id = pm.variables.get('test_id');",
 							"}",
 							"",
-							"//отладочный блок по выводу информации в консоль",
+							"//отладочный блок",
 							"if (pm.variables.get('debug')) {",
 							"    console.log('url: ' + url);",
 							"    console.log('значение токена: ' + csrf);",
@@ -85,6 +79,7 @@
 							"    case 'AT01-13':",
 							"        //получаем логин пользователя",
 							"        user = pm.variables.get('frst_user');",
+							"        ",
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'natural-person';",
 							"        break;",
@@ -99,13 +94,16 @@
 							"    case 'AT03-02':",
 							"        //получаем логин пользователя",
 							"        user = pm.variables.get('frst_user');",
+							"        ",
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'profile';",
 							"        break;",
 							"    ",
 							"    case 'AT02-01':",
+							"    case 'AT02-03':",
 							"        //получаем логин пользователя",
 							"        user = pm.variables.get('frst_user');",
+							"        ",
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'legal-entity';",
 							"        break;",
@@ -113,6 +111,7 @@
 							"    case 'AT03-01':",
 							"        //получаем логин пользователя",
 							"        user = pm.variables.get('frst_user');",
+							"        ",
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'sole-proprietor';",
 							"        break;",
@@ -123,6 +122,7 @@
 							"    case 'AT04-04':",
 							"        //получаем логин пользователя",
 							"        user = pm.variables.get('frst_user');",
+							"        ",
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'create';",
 							"        break;",
@@ -255,7 +255,7 @@
 							"//получаем идентификатор авто-теста",
 							"var test_id = pm.variables.get('test_id');",
 							"",
-							"//отладочный блок по выводу информации в консоль",
+							"//отладочный блок",
 							"if (pm.variables.get('debug')) {",
 							"    console.log('ид автотеста: ' + test_id);",
 							"    console.log('base URL: ' +  url);",
@@ -615,7 +615,7 @@
 							"    console.log('данные физ.лица: ' + json.data.naturalPerson.last_name + \" \" + json.data.naturalPerson.first_name + \" \" + json.data.naturalPerson.secondary_name + \"; рожденный \" + json.data.naturalPerson.birth_date);",
 							"}",
 							"",
-							"//отладочный блок по выводу информации в консоль",
+							"//отладочный блок",
 							"if (pm.variables.get('debug')) {",
 							"    console.log('ид автотеста: ' + test_id);",
 							"    console.log('тест-кейса в Jira: ' + test_case);",
@@ -1474,6 +1474,23 @@
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'logout';",
 							"        break;",
+							"    ",
+							"    case 'AT02-03':",
+							"        //проверка сведений по добавленному юр.лицу",
+							"        pm.test(\"response body contains added legal entity\", function () {",
+							"            pm.expect(json.data.legalEntity.name).to.eql(pm.variables.get('name'));",
+							"            pm.expect(json.data.legalEntity.inn).to.eql(pm.variables.get('inn'));",
+							"            pm.expect(json.data.legalEntity.kpp).to.eql(pm.variables.get('kpp'));",
+							"            pm.expect(json.data.legalEntity.legal_address).to.eql(pm.variables.get('legal_address'));",
+							"            ",
+							"            //Pass - если все assertions успешно прошли + комментарий",
+							"            testResult = 'Pass';",
+							"            testComment = 'The legal entity ID ' + legal_entity_id + ' was added successfuly';",
+							"        });",
+							"        ",
+							"        //определяем след. запрос из коллекции",
+							"        nextRequest = 'logout';",
+							"        break;",
 							"        ",
 							"    default:",
 							"        //выводим сообщение об ошибке",
@@ -1771,7 +1788,7 @@
 							"        //проверка информации об ошибке в теле ответа",
 							"        pm.test(\"response body contains error and invalid parameter ACCOUNT_NUMBER of payment method\", function () {",
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
-							"            pm.expect(json.data.account_number.stringLengthTooLong).to.eql(\"The input is less than 20 characters long\");",
+							"            pm.expect(json.data.account_number.stringLengthTooShort).to.eql(\"The input is less than 20 characters long\");",
 							"            ",
 							"            //Pass - если все assertions успешно прошли + комментарий",
 							"            testResult = 'Pass';",
@@ -2072,7 +2089,7 @@
 							"",
 							"switch (test_id) {",
 							"    case 'AT04-01':",
-							"        //проверка основных сведений по созданной сделке в теле ответа",
+							"        //проверка сведений по созданной сделке",
 							"        pm.test('response body contains added deal', function () {",
 							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
 							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
@@ -2081,7 +2098,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в сделка как физ.лицо",
+							"        //проверка участия в качестве физ.лица по сделке",
 							"        pm.test('response body contains added natural person', function() {",
 							"            pm.expect(json.data.deal.customer.is_natural_person).to.eql(true);",
 							"        });",
@@ -2091,7 +2108,7 @@
 							"           pm.expect(json.data.deal.delivery.service_type_name).to.eql('DPD');",
 							"        });",
 							"        ",
-							"        //проверка авто-подтверждения сделки при создании (ключевой assertion)",
+							"        //проверка авто-подтверждения сделки при создании",
 							"        pm.test('response body contains confirm by customer', function () {",
 							"            pm.expect(json.data.deal.customer.is_confirmed).to.eql(true);",
 							"            ",
@@ -2105,7 +2122,7 @@
 							"        break;",
 							"        ",
 							"    case 'AT04-02':",
-							"        //проверка основных сведений по созданной сделке в теле ответа",
+							"        //проверка сведений по созданной сделке",
 							"        pm.test('response body contains added deal', function () {",
 							"            pm.expect(json.data.deal.name).to.eql(pm.variables.get('name'));",
 							"            pm.expect(String(json.data.deal.deal_type)).to.eql(pm.variables.get('deal_type'));",
@@ -2114,7 +2131,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в сделке как юр.лица",
+							"        //проверка участия в качестве юр.лица по сделке",
 							"        pm.test('response body contains added legal entity', function() {",
 							"            pm.expect(json.data.deal.contractor.is_legal_entity).to.eql(true);",
 							"            ",
@@ -2150,7 +2167,7 @@
 							"            pm.expect(String(json.data.deal.amount_without_fee)).to.eql(pm.variables.get('amount'));",
 							"        });",
 							"        ",
-							"        //проверка участия в сделке как ИП",
+							"        //проверка участия в качестве ип по сделке",
 							"        pm.test('response body contains added sole proprietor', function() {",
 							"            pm.expect(json.data.deal.contractor.is_sole_proprietor).to.eql(true) ;",
 							"           ",
@@ -2180,6 +2197,7 @@
 							"        //проверка информации об ошибке в теле ответа",
 							"        pm.test('response body contains error and empty parameter delivery.service_type', function () {",
 							"            pm.expect(json.status).to.eql(\"ERROR\");",
+							"            ",
 							"            pm.expect(json.data.deal.delivery.service_type.isEmpty).to.eql(\"Value is required and can't be empty\");",
 							"           ",
 							"           //Pass - если все assertions успешно прошли + комментарий",
@@ -2630,451 +2648,271 @@
 	],
 	"variable": [
 		{
-<<<<<<< HEAD
-			"id": "9330526c-489c-4ff1-a5d4-b87a40db49b1",
-=======
 			"id": "76426c16-825e-4b8c-abec-b9c5d5bb8974",
->>>>>>> refs/remotes/origin/dev
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "124542d5-dd69-4d7a-85ec-b6f6c8a5fc00",
-=======
 			"id": "677f1a0e-d7a5-403c-87cd-283ca6990932",
->>>>>>> refs/remotes/origin/dev
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "a72b5112-23ae-49b6-af15-47cb3f9a1869",
-=======
 			"id": "608089ab-6871-478d-834d-4d69256df78f",
->>>>>>> refs/remotes/origin/dev
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "4d556088-b02e-4f0d-b318-10d55d851194",
-=======
 			"id": "dfc0c21e-dc3f-4a41-8dc0-d0633fdafd8d",
->>>>>>> refs/remotes/origin/dev
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "7c58ef94-b3bd-4e3a-bd72-d2a64b5cfaa4",
-=======
 			"id": "dbd65190-a7fe-4851-92ff-e9e83727c72e",
->>>>>>> refs/remotes/origin/dev
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "32b0badf-13a8-4520-b5ef-79060a7e2066",
-=======
 			"id": "a87be916-a41a-4a1e-9adf-fe27aad3c564",
->>>>>>> refs/remotes/origin/dev
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "421d147a-2a42-4c6a-9f80-0ae5e3660a8c",
-=======
 			"id": "48501aec-2c93-46b4-b49e-d9e5388690a0",
->>>>>>> refs/remotes/origin/dev
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "f8b03c85-eeca-4bd7-8c2c-2cf5f39cf4af",
-=======
 			"id": "f44a8504-c445-4c85-bcd8-351fb0e65da6",
->>>>>>> refs/remotes/origin/dev
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "bdbf948a-a55a-4625-9361-10ce7b84f40c",
-=======
 			"id": "a0ccdb17-2289-4535-a73f-f7142bbcc416",
->>>>>>> refs/remotes/origin/dev
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "c7165282-6848-4747-a8cb-abb066e438be",
-=======
 			"id": "98607799-070b-4fd8-830c-092aee047ab4",
->>>>>>> refs/remotes/origin/dev
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "812f226b-8266-49fb-b728-d930ad5f0cb5",
-=======
 			"id": "6854d6d5-43b8-43d1-9b1b-4286f4ed44fb",
->>>>>>> refs/remotes/origin/dev
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "b1485c48-8969-4275-aff0-212b7f8a5b0b",
-=======
 			"id": "919a2570-b818-49a0-859f-651a24eb97b3",
->>>>>>> refs/remotes/origin/dev
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "5d0e48d6-a6f0-468e-a697-0ac407af74ec",
-=======
 			"id": "052f4506-197c-4de9-ba98-3adfd594bd96",
->>>>>>> refs/remotes/origin/dev
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "9982dfa5-9649-4602-8ca0-11f4fda392dd",
-=======
 			"id": "efd0410e-ab7f-49d3-abd3-dbf9b36c4a8b",
->>>>>>> refs/remotes/origin/dev
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "2cb45d08-13b5-4852-b4ae-fdf3ceb9085c",
-=======
 			"id": "165abfd5-b5cb-4860-b403-c73e3bc90cb2",
->>>>>>> refs/remotes/origin/dev
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "966a855e-4b07-4db8-8579-bac4bb88c5d9",
-=======
 			"id": "9208c926-433e-4c89-944a-7b550e122466",
->>>>>>> refs/remotes/origin/dev
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "79a9fece-0851-48ef-a02a-d4382b0a4e15",
-=======
 			"id": "c670d380-3577-4ad6-aa1e-afe40f2ad82d",
->>>>>>> refs/remotes/origin/dev
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "e244554a-ad74-4801-a805-7abc989b69ab",
-=======
 			"id": "0bfa439f-c81c-4aa6-95fc-c236a96b42e7",
->>>>>>> refs/remotes/origin/dev
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "f58a8567-4637-4aa6-aab0-1d6b8e0bc99b",
-=======
 			"id": "fb206627-00e5-45fc-a062-43fc0e4cd526",
->>>>>>> refs/remotes/origin/dev
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "f151aeec-c3e5-4e6c-bc84-59387841973f",
-=======
 			"id": "a41ad49e-0f5d-45cc-91ba-8ca3f2873bdb",
->>>>>>> refs/remotes/origin/dev
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "2a36e9e2-a882-4f09-80c6-aa17560049b0",
-=======
 			"id": "075572bd-11c2-4609-9da6-fbe0622d131e",
->>>>>>> refs/remotes/origin/dev
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "f3b08cea-61ac-4f32-b5b1-65658aac57c8",
-=======
 			"id": "38ab3e76-2a1d-4f1a-9c5c-de2207e2a976",
->>>>>>> refs/remotes/origin/dev
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "378cb6a3-00e1-45ed-97ac-1f8a1edc66fb",
-=======
 			"id": "77ddcdf9-e48b-4817-abde-adee5f72b835",
->>>>>>> refs/remotes/origin/dev
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "e88a1c4f-2b2c-4ef6-90a9-3a86f900e24e",
-=======
 			"id": "e7c2eebc-7095-4bf9-b00d-120d7cd92f67",
->>>>>>> refs/remotes/origin/dev
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "116c1e4e-bb33-4f07-a600-9a3ba9c669a5",
-=======
 			"id": "159a010d-9ce1-41a3-811f-3c41c3a1cef1",
->>>>>>> refs/remotes/origin/dev
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "651cb0a4-7205-41f3-ad75-5301d171db03",
-=======
 			"id": "aee81368-a427-4825-8847-8a815628cfe2",
->>>>>>> refs/remotes/origin/dev
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "54394ceb-77f5-4cb4-b199-c9c7fde5dbee",
-=======
 			"id": "999f82db-49a0-4243-b6a2-df8a195b52e5",
->>>>>>> refs/remotes/origin/dev
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "592d6a38-72f4-45e7-b06f-210b76b50a2d",
-=======
 			"id": "d1e1f8f4-3ce5-4e14-9700-67ae3147ae77",
->>>>>>> refs/remotes/origin/dev
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "1a064c16-18e4-4753-b06e-93ced9fbe944",
-=======
 			"id": "c25ef2fe-f1a3-4e55-8c5c-80e095686f15",
->>>>>>> refs/remotes/origin/dev
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "e47fdb75-f9b8-4f6e-a211-1d2f2343fb00",
-=======
 			"id": "4ca7b4ea-24be-4990-9072-cd81cd5dc983",
->>>>>>> refs/remotes/origin/dev
 			"key": "debug",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "071191f7-c716-4d1d-8cd6-0eb482942ebd",
-=======
 			"id": "020093c8-0bd5-4deb-a902-d6242be9ce6b",
->>>>>>> refs/remotes/origin/dev
 			"key": "service_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "b5990925-54e3-4fc2-adb1-5deacb80d38a",
-=======
 			"id": "f840f10b-c781-41c2-9aca-9780f387d2b6",
->>>>>>> refs/remotes/origin/dev
 			"key": "terms_of_delivery",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "c7ad037d-9fd7-4ade-8ac4-13053f005b98",
-=======
 			"id": "aff33c36-64b0-4b2b-980a-0fab5e64e75a",
->>>>>>> refs/remotes/origin/dev
 			"key": "payment_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "113389b2-e667-48ab-960c-05b80f6cbc1f",
-=======
 			"id": "fe38ff85-2e7d-486d-8caa-34c738184842",
->>>>>>> refs/remotes/origin/dev
 			"key": "service_code",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "3d3a9685-96b9-4a3f-93ee-abc33dc1b2df",
-=======
 			"id": "e203463c-04f9-4482-8ed6-b8c68c8dfd5c",
->>>>>>> refs/remotes/origin/dev
 			"key": "parcel_quantity",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "d7a263da-f6c2-4dd9-9a2c-156463318904",
-=======
 			"id": "f0d84a18-a0bd-4f71-9269-ec4c3d58921e",
->>>>>>> refs/remotes/origin/dev
 			"key": "delivery_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "b41736e8-76fd-4856-bb09-4aee3e8444f5",
-=======
 			"id": "cdde5873-f1f3-47d3-b4d4-2c715645cae1",
->>>>>>> refs/remotes/origin/dev
 			"key": "pickup_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "e7af1b12-cbd9-4229-88e8-89a0cbf95969",
-=======
 			"id": "10bce25d-911e-486d-a247-96aa26a83e8f",
->>>>>>> refs/remotes/origin/dev
 			"key": "cargo_category",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "b228d8e1-ae89-42eb-aaae-eaf194954fcc",
-=======
 			"id": "9abe5c66-bf63-402c-a6a5-b475d089cc21",
->>>>>>> refs/remotes/origin/dev
 			"key": "city_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "571c76a2-324a-4009-8ff8-4f4e7f164ee1",
-=======
 			"id": "15e91184-cca9-4c76-919b-c4bc99b1ebd2",
->>>>>>> refs/remotes/origin/dev
 			"key": "street",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "ee62f452-97e3-4a9d-af5d-4bf6b9f08d39",
-=======
 			"id": "9057c0da-c70c-4e5e-81a6-fae1f5321fdd",
->>>>>>> refs/remotes/origin/dev
 			"key": "house",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "e9877c2f-1515-4da0-a33a-676fca2d74bf",
-=======
 			"id": "84e641b7-7721-4f4c-88ed-60e9f60dec92",
->>>>>>> refs/remotes/origin/dev
 			"key": "flat",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "db2cac40-905c-4019-bf76-b63a30f68ced",
-=======
 			"id": "4c25a0db-743c-41c3-9463-f5a3a051ac01",
->>>>>>> refs/remotes/origin/dev
 			"key": "contact_fio",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "426baa89-8229-4b5b-be5d-050dababe085",
-=======
 			"id": "b2bab9a8-c8a6-4440-ab6b-2ba01bb759ed",
->>>>>>> refs/remotes/origin/dev
 			"key": "contact_phone",
 			"value": "",
 			"type": "string"
 		},
 		{
-<<<<<<< HEAD
-			"id": "8213a08d-615d-4b67-9602-b70a54cb679f",
-=======
 			"id": "4bbee18c-7b3c-4baf-b669-d6ea30fd60ef",
->>>>>>> refs/remotes/origin/dev
 			"key": "contact_email",
 			"value": "",
 			"type": "string"
