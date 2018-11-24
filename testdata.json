@@ -5,8 +5,8 @@
 	"frst_user": "ravin",
 	"test_name": "Добавление нового физ.лица",
 	"rounds": "0",
-	"last_name": "Япоcнос",
-	"first_name":"Федоc",
+	"last_name": "Япоснос",
+	"first_name":"Федос",
 	"secondary_name":"Иванович",
 	"birth_date":"1971-05-01"
 },{
@@ -71,8 +71,8 @@
 	"frst_user": "ravin",
 	"test_name": "Добавление нового физ.лица со сложным ФИО",
 	"rounds": "0",
-	"last_name": "Япоcнос-Пандорус",
-	"first_name":"Федоc Второй",
+	"last_name": "Японус-Пандорус",
+	"first_name":"Федос Второй",
 	"secondary_name":"Иванович",
 	"birth_date":"1971-01-01"
 },{
