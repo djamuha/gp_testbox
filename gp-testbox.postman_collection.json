@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "8f0ad754-7806-418b-87e1-2e4c5922f49f",
 		"name": "gp-testbox",
-		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n- Added new assertion (check delivery type) in AT04-01 POST create request\n- Fixed AT04-02 assertions according new development for POST deal/create request\n- \n\nversion 6.2\n- Fixed AT01-10\n- Fixed code block where using switch operator\n- Added AT02-03",
+		"description": "The test-box allows to create various cases fro auto-testing project.\n\nversion 4.1 (sometime before)\n- debuged for login request (tests)\n- created draft of auto-test AT04-02\n\nversion 4.2 (sometime before)\n- added auto-test AT04-02\n\nversion 4.3 (sometime before)\n- added auto-test AT04-03\n\nversion 4.4 (sometime before)\n- added auto-test AT01-05\n- added auto-test AT01-06\n\nversion 5.1 (07.10.2018 02:22 am)\n- added new variables: \"testResult\", \"test_cycle\", \"test_case\" into requests with tests\n- changed conditions for sending login reuest in 'GET /login'\n- removed GET requests from tests\n- added new logical block for sending requests with test-case results to Jira\n\nversion 5.2 (08.10.2018, 01:11 pm)\n- made some changing of code (optimization)\n- made some changing of data file\n\nversion 5.3\n- made some changing of code (optimization)\n- added block of code for case status FAIL or PASS\n\nversion 6.0\n- added new AT01-07, AT01-08, AT01-09, AT01-10, AT01-11\n- updated algorithm of generation account number\n- edited test names for AT01-10, AT01-11, AT01-12, AT01-13, AT01-14\n\nversion 6.1\n- Added output results for tests in the POST request payment-method\n- Added AT04-04\n- Added new parameters in json row for POST deal/create request\n- Added new assertion (check delivery type) in AT04-01 POST create request\n- Fixed AT04-02 assertions according new development for POST deal/create request\n- \n\nversion 6.2\n- Fixed AT01-10\n- Fixed code block where using switch operator\n- Added AT02-03\n- \n\nversion 7.0\n- Added new AT05-01 for method filling deal by contractor",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,20 +14,36 @@
 					"script": {
 						"id": "8fba6f55-eaa8-49ec-9abc-bc5b5374f1a5",
 						"exec": [
-							"//получаем число циклов теста",
+							"//получаем число циклов теста из test_data",
 							"var rounds = pm.variables.get('rounds');",
 							"",
-							"if (rounds == 0) {",
-							"        console.log('Начало выполнения авто-теста \"' + pm.variables.get('test_id')",
-							"                    + ' ' + pm.variables.get('test_name') +'\"');",
-							"        ",
-							"        //полностью очищаем глобальный контекст",
-							"        pm.globals.clear();",
+							"",
+							"if (rounds > 0) {",
+							"    //получаем из глоб. контекста тек. значение раунда авто-теста",
+							"    var cur_round = pm.globals.get('cur_round');",
+							"",
+							"    if (cur_round > 0) {",
+							"        //выводим сведения о тек. раунде авто-теста в лог",
+							"        console.log('Раунд ' + cur_round + ' выполнения авто-теста \"' + pm.variables.get('test_id') + ' ' + pm.variables.get('test_name') +'\"');",
 							"    }",
-							"else",
-							"    {",
-							"        console.log('автотест продолжается с нового цикла');",
-							"    }"
+							"    else {",
+							"        //выводим в консоль стартовую строку логирования",
+							"        console.log('Начало выполнения авто-теста \"' + pm.variables.get('test_id') + ' ' + pm.variables.get('test_name') +'\"');",
+							"        ",
+							"        //полностью очищаем глобальный контекст перед началом выполнения нового авто-теста",
+							"        pm.globals.clear();",
+							"        ",
+							"        //сохраняем значение раунда 1 в глоб. контекст",
+							"        pm.globals.set('cur_round', 1);",
+							"    }",
+							"}",
+							"else {",
+							"    //выводим в консоль стартовую строку логирования",
+							"    console.log('Начало выполнения авто-теста \"' + pm.variables.get('test_id') + ' ' + pm.variables.get('test_name') +'\"');",
+							"    ",
+							"    //полностью очищаем глобальный контекст перед началом выполнения нового авто-теста",
+							"    pm.globals.clear();",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -51,6 +67,9 @@
 							"",
 							"//получаем токен из тела ответа",
 							"var csrf = json.data.csrf;",
+							"",
+							"//получаем текущий раунд автотеста",
+							"var cur_round = pm.globals.get('cur_round');",
 							"",
 							"if (csrf) {",
 							" //сохраняем токен в глоб. контекст",
@@ -127,9 +146,35 @@
 							"        nextRequest = 'create';",
 							"        break;",
 							"        ",
+							"    case 'AT05-01':",
+							"        //определяем раунд авто-теста",
+							"        switch (cur_round){",
+							"            case 1:",
+							"                //получаем логин пользователя",
+							"                user = pm.variables.get('frst_user');",
+							"                ",
+							"                //определяем след. запрос из коллекции",
+							"                nextRequest = 'create';",
+							"                break;",
+							"            ",
+							"            case 2:",
+							"                //получаем логин пользователя",
+							"                user = pm.variables.get('scnd_user');",
+							"                ",
+							"                //определяем след. запрос из коллекции",
+							"                nextRequest = 'confirm';",
+							"                break;",
+							"            ",
+							"            default:",
+							"                //выводим в консоль информацию",
+							"                console.log('[ERROR]: роунд авто-теста \"' + cur_round + '\" не определен');",
+							"                break;",
+							"        }",
+							"        break;",
+							"        ",
 							"    default:",
 							"        //выводим сообщение об ошибке",
-							"        console.log('[ERROR]: авто-тест ' + test_id + ' не определен');",
+							"        console.log('[ERROR]: авто-тест \"' + test_id + '\" не определен');",
 							"        ",
 							"        //зануляем все ключевые переменные",
 							"        test_id = null;",
@@ -2209,6 +2254,20 @@
 							"        //определяем след. запрос из коллекции",
 							"        nextRequest = 'logout';",
 							"        break;",
+							"    ",
+							"    case 'AT05-01':",
+							"        ",
+							"        if (json.status == 'SUCCESS') {",
+							"            //определяем след. запрос из коллекции",
+							"            nextRequest = 'civil-law-subject_payment-method';",
+							"            ",
+							"            //сохраняем id сделки",
+							"            pm.globals.set('deal_id', json.data.deal.id);",
+							"        }",
+							"        else",
+							"            console.log('[ERROR]: не удалось создать сделку - ' + json.code + '; ' + json.message);",
+							"        ",
+							"        break;",
 							"        ",
 							"    default:",
 							"        //выводим сообщение об ошибке",
@@ -2620,6 +2679,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "civil-law-subject_payment-method",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "accept-encoding",
+						"value": "gzip, deflate",
+						"type": "text"
+					},
+					{
+						"key": "accept-language",
+						"value": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
+						"type": "text"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache",
+						"type": "text"
+					},
+					{
+						"key": "connection",
+						"value": "keep-alive",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"csrf\":\"{{csrf}}\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n,\"\":\"\"\n}"
+				},
+				"url": {
+					"raw": "http://{{host}}/deal/{{deal_id}}/civil-law-subject_payment-method",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"deal",
+						"{{deal_id}}",
+						"civil-law-subject_payment-method"
+					]
+				},
+				"description": "Allows to add data in deal (make before filling) for success confirmation"
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -2648,271 +2773,271 @@
 	],
 	"variable": [
 		{
-			"id": "76426c16-825e-4b8c-abec-b9c5d5bb8974",
+			"id": "6cbbe893-436a-474f-b8e2-83d9073f11bd",
 			"key": "test_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "677f1a0e-d7a5-403c-87cd-283ca6990932",
+			"id": "9bbd613d-a2d0-4d25-8829-a0adb41b1115",
 			"key": "test_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "608089ab-6871-478d-834d-4d69256df78f",
+			"id": "90760d1c-d366-4051-97bb-bf18c9e4ed2e",
 			"key": "frst_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dfc0c21e-dc3f-4a41-8dc0-d0633fdafd8d",
+			"id": "ab073cda-d197-406a-9fd7-25a7142c94ba",
 			"key": "scnd_user",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "dbd65190-a7fe-4851-92ff-e9e83727c72e",
+			"id": "9ee55dce-23ec-48e9-9aea-aa1d1ee741ab",
 			"key": "rounds",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a87be916-a41a-4a1e-9adf-fe27aad3c564",
+			"id": "95b2cd93-076f-4c60-96c7-7d301407b43a",
 			"key": "last_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "48501aec-2c93-46b4-b49e-d9e5388690a0",
+			"id": "b3ae8e7f-556f-43b6-aaff-a0e7b79a56da",
 			"key": "first_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f44a8504-c445-4c85-bcd8-351fb0e65da6",
+			"id": "04353149-db85-4601-b731-d29e6cab0e64",
 			"key": "secondary_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a0ccdb17-2289-4535-a73f-f7142bbcc416",
+			"id": "0ad9e0b2-0480-4f73-8753-4e619daecb82",
 			"key": "birth_date",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "98607799-070b-4fd8-830c-092aee047ab4",
+			"id": "c0edfb79-a6de-44bd-84b0-64e9405f2516",
 			"key": "inn",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6854d6d5-43b8-43d1-9b1b-4286f4ed44fb",
+			"id": "35a127fe-2f62-43c3-8c3d-867a9216a8fe",
 			"key": "kpp",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "919a2570-b818-49a0-859f-651a24eb97b3",
+			"id": "d0c0ae15-54a2-47fc-a0bd-d85268a8bdb7",
 			"key": "nds_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "052f4506-197c-4de9-ba98-3adfd594bd96",
+			"id": "ae02525f-e685-46cb-b1ca-520a5b3f44ba",
 			"key": "bik",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "efd0410e-ab7f-49d3-abd3-dbf9b36c4a8b",
+			"id": "4985e5a0-8550-4fd4-9322-d2ed7c186535",
 			"key": "bank_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "165abfd5-b5cb-4860-b403-c73e3bc90cb2",
+			"id": "d7d2bbbf-2f6a-4c43-858d-f40201cdde45",
 			"key": "corr_account_number",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9208c926-433e-4c89-944a-7b550e122466",
+			"id": "274a970c-b7ac-450d-a88e-fb31a3f9df9e",
 			"key": "deal_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c670d380-3577-4ad6-aa1e-afe40f2ad82d",
+			"id": "84370cdd-8128-4c84-b273-6f8f1d5747df",
 			"key": "deal_role",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "0bfa439f-c81c-4aa6-95fc-c236a96b42e7",
+			"id": "c05edadc-fad3-4f51-984e-b924111b914f",
 			"key": "name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "fb206627-00e5-45fc-a062-43fc0e4cd526",
+			"id": "6dbae967-41a9-41f6-8118-1cec72ea914c",
 			"key": "addon_terms",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "a41ad49e-0f5d-45cc-91ba-8ca3f2873bdb",
+			"id": "68e1a89a-9422-4d15-9765-a9b9a9b4d1b6",
 			"key": "amount",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "075572bd-11c2-4609-9da6-fbe0622d131e",
+			"id": "3105e792-a9cd-44bb-98c8-a464ac81fda4",
 			"key": "fee_payer_option",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "38ab3e76-2a1d-4f1a-9c5c-de2207e2a976",
+			"id": "892b82a4-e75d-4c3e-84c8-0e12d49453e3",
 			"key": "delivery_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "77ddcdf9-e48b-4817-abde-adee5f72b835",
+			"id": "42c950c1-b16a-43ff-8dbc-2a8ff76c4026",
 			"key": "counteragent_email",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e7c2eebc-7095-4bf9-b00d-120d7cd92f67",
+			"id": "f57a8226-7215-4dfc-a1c1-b02f4bf5e3c2",
 			"key": "civil_law_subject_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "159a010d-9ce1-41a3-811f-3c41c3a1cef1",
+			"id": "868c7771-0c15-4193-a96d-94d09a9f765a",
 			"key": "legal_name",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "aee81368-a427-4825-8847-8a815628cfe2",
+			"id": "3746fb5c-c711-4e44-b283-d8175ca246a9",
 			"key": "legal_address",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "999f82db-49a0-4243-b6a2-df8a195b52e5",
+			"id": "830b8191-d01a-47c2-9cb6-92d627b93159",
 			"key": "payment_method_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "d1e1f8f4-3ce5-4e14-9700-67ae3147ae77",
+			"id": "f3867f87-7ba9-4b5a-8eab-88c6b7126d50",
 			"key": "test_cycle",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "c25ef2fe-f1a3-4e55-8c5c-80e095686f15",
+			"id": "16388177-d3ef-4088-90dc-529bb480a141",
 			"key": "test_case",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4ca7b4ea-24be-4990-9072-cd81cd5dc983",
+			"id": "4b22b7b7-1eb4-41c7-8993-f80f33e1a6e7",
 			"key": "debug",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "020093c8-0bd5-4deb-a902-d6242be9ce6b",
+			"id": "55d2d47a-b431-4da3-886f-009f96f56055",
 			"key": "service_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f840f10b-c781-41c2-9aca-9780f387d2b6",
+			"id": "cc5983f7-9c3a-4cbb-a3f6-1b7c1f8a2c4b",
 			"key": "terms_of_delivery",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "aff33c36-64b0-4b2b-980a-0fab5e64e75a",
+			"id": "752a0a32-3a55-41f6-b182-227f13d4ae93",
 			"key": "payment_type",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "fe38ff85-2e7d-486d-8caa-34c738184842",
+			"id": "826f55d1-7c3b-4f1b-ba00-109eb246531b",
 			"key": "service_code",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e203463c-04f9-4482-8ed6-b8c68c8dfd5c",
+			"id": "688f6463-4581-4c42-9fa7-c32eb5942fd4",
 			"key": "parcel_quantity",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f0d84a18-a0bd-4f71-9269-ec4c3d58921e",
+			"id": "c544fbcb-5e81-4471-a91c-d8f60146bb16",
 			"key": "delivery_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "cdde5873-f1f3-47d3-b4d4-2c715645cae1",
+			"id": "2ecc573c-ac0d-48f7-a7d7-3c9735ed9c1b",
 			"key": "pickup_time_period",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "10bce25d-911e-486d-a247-96aa26a83e8f",
+			"id": "31dca3bf-9644-4090-a581-08f48df3c067",
 			"key": "cargo_category",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9abe5c66-bf63-402c-a6a5-b475d089cc21",
+			"id": "b53a333a-5fa8-48d2-9438-41ed089e8d8c",
 			"key": "city_id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "15e91184-cca9-4c76-919b-c4bc99b1ebd2",
+			"id": "05078a07-0ee0-4539-bfd8-9efb972d74f2",
 			"key": "street",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "9057c0da-c70c-4e5e-81a6-fae1f5321fdd",
+			"id": "a8c7f0fe-4ee4-4b08-8147-cd3269d8493f",
 			"key": "house",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "84e641b7-7721-4f4c-88ed-60e9f60dec92",
+			"id": "ceda931a-f445-48e0-b755-e380cfecdc25",
 			"key": "flat",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4c25a0db-743c-41c3-9463-f5a3a051ac01",
+			"id": "487373da-2e54-4004-b878-51298f0c8460",
 			"key": "contact_fio",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "b2bab9a8-c8a6-4440-ab6b-2ba01bb759ed",
+			"id": "491c6ca4-9174-4a5c-8003-2acf97e32dd5",
 			"key": "contact_phone",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4bbee18c-7b3c-4baf-b669-d6ea30fd60ef",
+			"id": "e1fadd89-02f2-4a74-abe5-0a533e64a0db",
 			"key": "contact_email",
 			"value": "",
 			"type": "string"
